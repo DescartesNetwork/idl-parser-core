@@ -1,0 +1,29 @@
+{
+  "name": "idl-parser",
+  "version": "1.0.0",
+  "description": "IDL parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DescartesNetwork/idl-parser.git"
+  },
+  "keywords": [
+    "idl",
+    "parser"
+  ],
+  "author": "hi@sentre.io",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DescartesNetwork/idl-parser/issues"
+  },
+  "homepage": "https://github.com/DescartesNetwork/idl-parser#readme",
+  "devDependencies": {
+    "@types/react": "^18.0.9",
+    "react": "^18.1.0",
+    "typescript": "^4.6.4"
+  }
+}
