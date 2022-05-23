@@ -12,8 +12,7 @@ import {
 } from 'react'
 import { Idl } from '@project-serum/anchor'
 import { IdlInstruction } from '@project-serum/anchor/dist/cjs/idl'
-
-import { IdlParser } from 'parser/helpers'
+import { IdlParser } from '../helpers'
 
 const Context = createContext<ParserProvider>({} as ParserProvider)
 
