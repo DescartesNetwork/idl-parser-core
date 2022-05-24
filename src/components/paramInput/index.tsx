@@ -1,0 +1,144 @@
+import { Fragment, useState } from 'react'
+import { IdlType } from '@project-serum/anchor/dist/cjs/idl'
+
+import DefinedInput from './definedInput'
+import PublicKeyInput, { SELECT_SYSTEM } from '../publicKeyInput'
+import ArrayInput from './arrayInput'
+import Typography from '../../typography'
+import Modal from '../../modal'
+
+import { useParser } from '../../providers/parser.provider'
+import { ParserSystemOptions } from '../../constants'
+
+const NORMAL_TYPES = [
+  'u8',
+  'i8',
+  'u16',
+  'i16',
+  'u32',
+  'i32',
+  'f32',
+  'u64',
+  'i64',
+  'f64',
+  'u128',
+  'i128',
+]
+type WrapInputProps = {
+  idlType: any
+  inputName: string
+  onChange: (value: string) => void
+}
+const WrapInput = ({ inputName, idlType, onChange }: WrapInputProps) => {
+  const { parser } = useParser()
+  if (!parser.idl?.accounts) return null
+
+  if (idlType['vec'])
+    return <ArrayInput idlType={idlType['vec']} onChange={onChange} />
+  if (idlType['array']) {
+    if (Array.isArray(idlType['array'])) {
+      return <ArrayInput idlType={idlType['array'][0]} onChange={onChange} />
+    }
+    return <ArrayInput idlType={idlType['array']} onChange={onChange} />
+  }
+
+  if (idlType['defined']) {
+    return (
+      <WrapInput
+        idlType={idlType['defined']}
+        inputName={inputName}
+        onChange={onChange}
+      />
+    )
+  }
+
+  return <DefinedInput name={idlType} onChange={onChange} />
+}
+
+type ParamInputProps = {
+  name: string
+  value: string
+  idlType: IdlType
+  onChange: (val: string) => void
+  placeholder?: string
+}
+
+const ParamInput = ({
+  name,
+  value,
+  idlType,
+  onChange,
+  placeholder = 'Input or select your types',
+}: ParamInputProps) => {
+  const [visible, setVisible] = useState(false)
+  const [systemSelected, setSystemSelected] = useState(
+    ParserSystemOptions.system,
+  )
+
+  const onChangeWrapInput = (val: string) => {
+    onChange(val)
+    setVisible(false)
+  }
+
+  return (
+    <div>
+      {idlType === 'publicKey' ? (
+        <div>
+          <PublicKeyInput
+            name={name}
+            onChange={(acc) => onChange(acc.publicKey)}
+            value={value}
+          />
+        </div>
+      ) : (
+        <Fragment>
+          <div>
+            <Typography style={{ textTransform: 'capitalize' }}>
+              {name}
+            </Typography>
+          </div>
+          <div>
+            <input
+              value={value}
+              placeholder={placeholder}
+              onChange={(e) => onChange(e.target.value)}
+            />
+            <Typography
+              style={{ fontWeight: 'bold', cursor: 'pointer' }}
+              onClick={() => setVisible(true)}
+            >
+              Init
+            </Typography>
+          </div>
+          <div>
+            <select
+              defaultValue={systemSelected}
+              onChange={(e) => setSystemSelected(e.target.value)}
+              disabled
+              style={{ minWidth: 120 }}
+            >
+              {SELECT_SYSTEM.map((item, idx) => (
+                <option value={item} key={idx}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+        </Fragment>
+      )}
+      {/* Advanced input */}
+      {!NORMAL_TYPES.includes(idlType.toString()) && (
+        <Modal visible={visible} onClose={() => setVisible(false)}>
+          <span>{name}</span>
+          <WrapInput
+            idlType={idlType}
+            onChange={onChangeWrapInput}
+            inputName={name}
+          />
+        </Modal>
+      )}
+    </div>
+  )
+}
+
+export default ParamInput

@@ -1,4 +1,12 @@
-import { CSSProperties, Fragment, ReactNode, useEffect } from 'react'
+import {
+  CSSProperties,
+  Fragment,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react'
+import { createPortal } from 'react-dom'
 
 type ModalProps = {
   visible?: boolean
@@ -10,7 +18,7 @@ type ModalProps = {
   className?: string
 }
 
-const Modal = ({
+const RawModal = ({
   visible,
   children,
   onClose = () => {},
@@ -19,6 +27,22 @@ const Modal = ({
   bodyStyle,
   className,
 }: ModalProps) => {
+  const modalBodyRef = useRef<HTMLDivElement>(null)
+
+  const onClickOutSide = useCallback(
+    (event: MouseEvent) => {
+      const ref = modalBodyRef.current
+      const target = event.target
+      if (!!ref && !ref?.contains(target as Node)) onClose()
+    },
+    [onClose],
+  )
+
+  useEffect(() => {
+    document.addEventListener('mousedown', onClickOutSide)
+    return () => document.removeEventListener('mousedown', onClickOutSide)
+  }, [onClickOutSide])
+
   useEffect(() => {
     if (!visible) onClose()
   }, [onClose, visible])
@@ -28,23 +52,28 @@ const Modal = ({
     : 'sntr-modal-wrapper'
 
   if (!visible) return <Fragment />
+
   return (
-    <Fragment>
-      <style>
-        {
-          '.sntr-modal-wrapper{position:fixed;width:100vw;height:100vh;top:0;left:0}.sntr-modal-mark{width:100%;height:100%;backdrop-filter:blur(2px)}.sntr-modal-content{position:absolute;min-width:575px;top:50%;left:50%;transform:translate(-50%,-50%);padding:24px;background:#dadada;border-radius:8px}.sntr-modal-close-ico{position:absolute;display:flex;justify-content:center;align-items:center;width:34px;height:34px;top:0;right:0}'
-        }
-      </style>
-      <div className={modalCln}>
-        {!!mark && <div className="sntr-modal-mark"></div>}
-        <div style={{ ...bodyStyle }} className="sntr-modal-content">
-          <div className="sntr-modal-close-ico" onClick={onClose}>
-            {closeIcon}
-          </div>
-          <div className="sntr-modal-body">{children}</div>
+    <div className={modalCln}>
+      {!!mark && <div className="sntr-modal-mark"></div>}
+      <div
+        style={{ ...bodyStyle }}
+        className="sntr-modal-content"
+        ref={modalBodyRef}
+      >
+        <div className="sntr-modal-close-ico" onClick={onClose}>
+          {closeIcon}
         </div>
+        <div className="sntr-modal-body">{children}</div>
       </div>
-    </Fragment>
+    </div>
+  )
+}
+
+const Modal = (props: ModalProps) => {
+  return createPortal(
+    <RawModal {...props} />,
+    document.querySelector('body') as Element,
   )
 }
 

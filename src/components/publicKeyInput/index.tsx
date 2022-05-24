@@ -7,6 +7,7 @@ import IdlAccount from './idlAccount'
 import TokenAccount from './tokenAccount'
 import Pda from './pda'
 import Modal from '../../modal'
+
 import { ParserSystemOptions } from '../../constants'
 import { AccountsMeta } from '../../providers/parser.provider'
 
