@@ -1,4 +1,7 @@
 import { Fragment } from 'react'
+
+import Button from '../../button'
+
 import { useParser } from '../../providers/parser.provider'
 
 const ContextAccount = ({ onClick }: { onClick: (val: string) => void }) => {
@@ -23,7 +26,7 @@ const ContextAccount = ({ onClick }: { onClick: (val: string) => void }) => {
                 <input value={val} />
               </div>
               <div>
-                <button onClick={() => onClick(val)}>Select</button>
+                <Button onClick={() => onClick(val)}>Select</Button>
               </div>
             </Fragment>
           )

@@ -1,5 +1,7 @@
 import { IdlTypeDefTyEnum } from '@project-serum/anchor/dist/cjs/idl'
 
+import Button from '../../../button'
+
 const EnumInput = ({
   enumType,
   onChange,
@@ -17,7 +19,7 @@ const EnumInput = ({
                 <input value={variant.name} />
               </div>
               <div>
-                <button onClick={() => onChange(variant.name)}>OK</button>
+                <Button onClick={() => onChange(variant.name)}>OK</Button>
               </div>
             </div>
           </div>

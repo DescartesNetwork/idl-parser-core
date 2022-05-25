@@ -1,14 +1,19 @@
 import { useState } from 'react'
+
+import ParamInput from '../components/paramInput'
 import PublicKeyInput from '../components/publicKeyInput'
+import Segmented from '../segmented'
+import Empty from '../empty'
+
 import { useParser } from '../providers/parser.provider'
 
-const InstructorAccounts = () => {
+export const InstructorAccounts = () => {
   const {
     parser: { accountsMeta, instructionIdl },
     setAccountsMeta,
   } = useParser()
 
-  if (!instructionIdl?.accounts.length) return <div>Emtpy</div>
+  if (!instructionIdl?.accounts.length) return <Empty />
   return (
     <div>
       {instructionIdl.accounts.map((account, idx) => (
@@ -26,19 +31,24 @@ const InstructorAccounts = () => {
   )
 }
 
-const InstructorArguments = () => {
+export const InstructorArguments = () => {
   const {
     parser: { instructionIdl, argsMeta },
     setArgsMeta,
   } = useParser()
 
-  if (!instructionIdl?.args.length) return <div>Empty</div>
+  if (!instructionIdl?.args.length) return <Empty />
 
   return (
     <div>
-      {instructionIdl.args.map((arg, idx) => (
+      {instructionIdl.args.map(({ name, type }, idx) => (
         <div key={idx}>
-          <span>{arg.name}</span>
+          <ParamInput
+            idlType={type}
+            onChange={(val) => setArgsMeta({ name, val })}
+            name={name}
+            value={argsMeta[name]}
+          />
         </div>
       ))}
     </div>
@@ -54,26 +64,22 @@ const INSTRUCTIONS = {
 const TAB_INSTRUCS = ['accounts', 'arguments']
 
 const InstrctionView = () => {
-  const [selected, setSelected] = useState<InstrucSegmentedType>('accounts')
+  const [selected, setSelected] = useState('accounts')
   const {
     parser: { idl },
   } = useParser()
 
-  if (!idl) return <div>EMpty</div>
-
+  if (!idl) return <Empty />
   return (
-    <div>
-      <div className="tabs">
-        {TAB_INSTRUCS.map((tab, idx) => (
-          <div
-            key={idx}
-            onClick={() => setSelected(tab as InstrucSegmentedType)}
-          >
-            {tab}
-          </div>
-        ))}
+    <div className="grid gird-cols-12">
+      <div>
+        <Segmented
+          value={selected}
+          options={TAB_INSTRUCS}
+          onChange={setSelected}
+        />
       </div>
-      <div>{INSTRUCTIONS[selected]}</div>
+      <div>{INSTRUCTIONS[selected as InstrucSegmentedType]}</div>
     </div>
   )
 }

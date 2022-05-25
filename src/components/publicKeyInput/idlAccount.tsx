@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Program, web3 } from '@project-serum/anchor'
+
+import Button from '../../button'
+
 import { useParser } from '../../providers/parser.provider'
 
 const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
@@ -83,9 +86,9 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
             />
           </div>
           <div>
-            <button onClick={() => onFetchAccountData()} disabled={!address}>
+            <Button onClick={() => onFetchAccountData()} disabled={!address}>
               Fetch
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -98,7 +101,7 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
               {accountsViewer[key].map((val) => (
                 <div>
                   <input value={val} />
-                  <button onClick={() => onChange(val)}>Select</button>
+                  <Button onClick={() => onChange(val)}>Select</Button>
                 </div>
               ))}
             </div>

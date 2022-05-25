@@ -6,6 +6,8 @@ import PublicKeyInput, { SELECT_SYSTEM } from '../publicKeyInput'
 import ArrayInput from './arrayInput'
 import Typography from '../../typography'
 import Modal from '../../modal'
+import Input from '../../input'
+import Button from '../../button'
 
 import { useParser } from '../../providers/parser.provider'
 import { ParserSystemOptions } from '../../constants'
@@ -97,20 +99,17 @@ const ParamInput = ({
               {name}
             </Typography>
           </div>
-          <div>
-            <input
+          <div className="flex flex-nowrap justify-between gap-[6px]">
+            <Input
+              className="flex-auto"
               value={value}
-              placeholder={placeholder}
-              onChange={(e) => onChange(e.target.value)}
+              onChange={onChange}
+              suffix={
+                <Button type="text" onClick={() => setVisible(true)}>
+                  <Typography level={5}>Init</Typography>
+                </Button>
+              }
             />
-            <Typography
-              style={{ fontWeight: 'bold', cursor: 'pointer' }}
-              onClick={() => setVisible(true)}
-            >
-              Init
-            </Typography>
-          </div>
-          <div>
             <select
               defaultValue={systemSelected}
               onChange={(e) => setSystemSelected(e.target.value)}

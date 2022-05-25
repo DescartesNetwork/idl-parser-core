@@ -7,6 +7,9 @@ import IdlAccount from './idlAccount'
 import TokenAccount from './tokenAccount'
 import Pda from './pda'
 import Modal from '../../modal'
+import Input from '../../input'
+import Button from '../../button'
+import Typography from '../../typography'
 
 import { ParserSystemOptions } from '../../constants'
 import { AccountsMeta } from '../../providers/parser.provider'
@@ -73,24 +76,21 @@ const PublicKeyInput = ({
   }
 
   return (
-    <div>
+    <div className="flex flex-col">
       <div>
         <span style={{ textTransform: 'capitalize' }}>{name}</span>
       </div>
-      <div>
-        <input
+      <div className="flex flex-nowrap gap-[16px]">
+        <Input
+          className="flex-auto"
           value={value}
-          placeholder={placeholder}
-          onChange={(e) => onChangePublicKey(e.target.value)}
+          onChange={onChangePublicKey}
+          suffix={
+            <Button type="text" onClick={() => setVisible(true)}>
+              <Typography level={5}>Init</Typography>
+            </Button>
+          }
         />
-        <span
-          style={{ fontWeight: 'bold', cursor: 'pointer' }}
-          onClick={() => setVisible(true)}
-        >
-          Init
-        </span>
-      </div>
-      <div>
         <select
           style={{ textTransform: 'capitalize', minWidth: 120 }}
           defaultValue={ParserSystemOptions.system}
@@ -108,8 +108,10 @@ const PublicKeyInput = ({
         </select>
       </div>
       {/* Advanced input */}
+      {systemSelected}
       <Modal visible={visible} onClose={() => setVisible(false)}>
-        <h5>{name}</h5>
+        <Typography level={5}>{name}</Typography>
+        <Typography>{name}</Typography>
         <ModalView selected={systemSelected} onChange={onChangePublicKey} />
       </Modal>
     </div>

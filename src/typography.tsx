@@ -27,7 +27,7 @@ const Typography = ({
 
   return createElement(
     typoType,
-    { ...props, cln, style: { ...style } },
+    { ...props, class: cln, style: { ...style } },
     children,
   )
 }

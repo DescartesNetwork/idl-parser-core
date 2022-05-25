@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { IdlType } from '@project-serum/anchor/dist/cjs/idl'
 
 import ParamInput from './index'
+import Button from '../../button'
 
 const ArrayInput = ({
   idlType,
@@ -32,7 +33,7 @@ const ArrayInput = ({
   return (
     <div>
       <div>
-        <button onClick={() => onAdd()}>Add</button>
+        <Button onClick={() => onAdd()}>Add</Button>
       </div>
       {values.map((val, idx) => {
         return (
@@ -48,7 +49,7 @@ const ArrayInput = ({
       })}
       {!!values.length && (
         <div>
-          <button onClick={() => onOk()}>Done</button>
+          <Button onClick={() => onOk()}>Done</Button>
         </div>
       )}
     </div>

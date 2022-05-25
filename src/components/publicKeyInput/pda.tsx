@@ -3,6 +3,8 @@ import { web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
 import PubicKeyInput from './index'
+import Button from '../../button'
+
 import { useParser } from '../../providers/parser.provider'
 
 const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
@@ -41,7 +43,7 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
   return (
     <div>
       <div>
-        <button onClick={() => onAdd()}>Add</button>
+        <Button onClick={() => onAdd()}>Add</Button>
       </div>
 
       {seeds.map((val, idx) => {
@@ -58,14 +60,14 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
 
       {pdaAddress && <div>PDA Address: {pdaAddress}</div>}
       <div>
-        <button onClick={deriveNewPDAAddress} disabled={!seeds.length}>
+        <Button onClick={deriveNewPDAAddress} disabled={!seeds.length}>
           Fetch PDA
-        </button>
+        </Button>
       </div>
       <div>
-        <button onClick={() => onChange(pdaAddress)} disabled={!pdaAddress}>
+        <Button onClick={() => onChange(pdaAddress)} disabled={!pdaAddress}>
           Done
-        </button>
+        </Button>
       </div>
     </div>
   )

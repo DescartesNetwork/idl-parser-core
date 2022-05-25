@@ -1,4 +1,4 @@
-import './index.css'
+import './index.min.css'
 
 export { UploadIdl } from './upload'
 export {

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { IdlTypeDefTyStruct } from '@project-serum/anchor/dist/cjs/idl'
 
 import ParamInput from '../index'
+import Button from '../../../button'
 
 const StructInput = ({
   structType,
@@ -33,7 +34,7 @@ const StructInput = ({
         )
       })}
       <div>
-        <button onClick={() => onChange(JSON.stringify(structData))}>OK</button>
+        <Button onClick={() => onChange(JSON.stringify(structData))}>OK</Button>
       </div>
     </div>
   )
