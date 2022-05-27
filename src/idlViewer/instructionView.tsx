@@ -1,9 +1,9 @@
 import { useState } from 'react'
+import Empty from '../components/empty'
 
 import ParamInput from '../components/paramInput'
 import PublicKeyInput from '../components/publicKeyInput'
-import Segmented from '../segmented'
-import Empty from '../empty'
+import Segmented from '../components/segmented'
 
 import { useParser } from '../providers/parser.provider'
 
@@ -15,17 +15,16 @@ export const InstructorAccounts = () => {
 
   if (!instructionIdl?.accounts.length) return <Empty />
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {instructionIdl.accounts.map((account, idx) => (
-        <div key={idx}>
-          <PublicKeyInput
-            onChange={(accData) =>
-              setAccountsMeta({ name: account.name, data: accData })
-            }
-            name={account.name}
-            value={accountsMeta[account.name]?.publicKey}
-          />
-        </div>
+        <PublicKeyInput
+          onChange={(accData) =>
+            setAccountsMeta({ name: account.name, data: accData })
+          }
+          name={account.name}
+          value={accountsMeta[account.name]?.publicKey}
+          key={idx}
+        />
       ))}
     </div>
   )
@@ -40,16 +39,15 @@ export const InstructorArguments = () => {
   if (!instructionIdl?.args.length) return <Empty />
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {instructionIdl.args.map(({ name, type }, idx) => (
-        <div key={idx}>
-          <ParamInput
-            idlType={type}
-            onChange={(val) => setArgsMeta({ name, val })}
-            name={name}
-            value={argsMeta[name]}
-          />
-        </div>
+        <ParamInput
+          idlType={type}
+          onChange={(val) => setArgsMeta({ name, val })}
+          name={name}
+          value={argsMeta[name]}
+          key={idx}
+        />
       ))}
     </div>
   )
@@ -63,7 +61,7 @@ const INSTRUCTIONS = {
 
 const TAB_INSTRUCS = ['accounts', 'arguments']
 
-const InstrctionView = () => {
+const InstructionView = () => {
   const [selected, setSelected] = useState('accounts')
   const {
     parser: { idl },
@@ -71,7 +69,7 @@ const InstrctionView = () => {
 
   if (!idl) return <Empty />
   return (
-    <div className="grid gird-cols-12">
+    <div className="flex flex-col gap-5">
       <div>
         <Segmented
           value={selected}
@@ -84,4 +82,4 @@ const InstrctionView = () => {
   )
 }
 
-export default InstrctionView
+export default InstructionView

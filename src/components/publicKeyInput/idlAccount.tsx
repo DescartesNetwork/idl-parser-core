@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Program, web3 } from '@project-serum/anchor'
 
-import Button from '../../button'
+import Button from '../button'
 
 import { useParser } from '../../providers/parser.provider'
+import Select from '../select'
+import Input from '../input'
 
 const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   const [address, setAddress] = useState('')
@@ -15,13 +17,14 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
     parser: { idl, programAddress },
   } = useParser()
 
-  const getProgram = () => {
+  const getProgram = useCallback(() => {
     if (!idl || !programAddress) return
     const provider = undefined
     const program = new Program(idl, programAddress, provider)
     return program
-  }
-  const onFetchAccountData = async () => {
+  }, [idl, programAddress])
+
+  const onFetchAccountData = useCallback(async () => {
     try {
       const program = getProgram()
       if (!program || !accountType || !address) return
@@ -54,7 +57,11 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
     } catch (error) {
       console.log(error)
     }
-  }
+  }, [accountType, address, getProgram])
+
+  useEffect(() => {
+    onFetchAccountData()
+  }, [onFetchAccountData])
 
   useEffect(() => {
     const fistAccount = idl?.accounts?.[0]?.name || ''
@@ -62,49 +69,35 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   }, [accountType, idl?.accounts])
 
   return (
-    <div>
+    <div className="flex flex-col gap-3">
+      <Select
+        value={accountType}
+        style={{ minWidth: 120, minHeight: 32 }}
+        onValue={() => {}}
+      >
+        {idl?.accounts?.map((acc, idx) => {
+          return (
+            <option value={acc.name} key={idx}>
+              {acc.name}
+            </option>
+          )
+        })}
+      </Select>
       <div>
-        <select value={accountType} style={{ minWidth: 120 }}>
-          {idl?.accounts?.map((acc, idx) => {
-            return (
-              <option value={acc.name} key={idx}>
-                {acc.name}
-              </option>
-            )
-          })}
-        </select>
-      </div>
-      <div>
-        <div>
-          <div>
-            <span>Address</span>
-          </div>
-          <div>
-            <input
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </div>
-          <div>
-            <Button onClick={() => onFetchAccountData()} disabled={!address}>
-              Fetch
-            </Button>
-          </div>
-        </div>
+        <span>Address</span>
+        <Input value={address} onValue={setAddress} />
       </div>
 
       {Object.keys(accountsViewer).map((key) => {
         if (!accountsViewer[key].length) return null
         return (
           <div key={key}>
-            <div>
-              {accountsViewer[key].map((val) => (
-                <div>
-                  <input value={val} />
-                  <Button onClick={() => onChange(val)}>Select</Button>
-                </div>
-              ))}
-            </div>
+            {accountsViewer[key].map((val) => (
+              <div>
+                <Input value={val} onValue={() => {}} />
+                <Button onClick={() => onChange(val)}>Select</Button>
+              </div>
+            ))}
           </div>
         )
       })}

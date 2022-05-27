@@ -23,11 +23,11 @@ const Typography = ({
   ...props
 }: TypographyProps) => {
   const typoType = !!level ? `h${level}` : 'span'
-  const cln = !!level ? `sntr-h${level} ${className}` : className
+  const customStyle = { display: 'block' }
 
   return createElement(
     typoType,
-    { ...props, class: cln, style: { ...style } },
+    { ...props, className, style: { ...customStyle, ...style } },
     children,
   )
 }

@@ -2,48 +2,36 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Modal */
-.sntr-modal-wrapper {
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-}
-.sntr-modal-mark {
+/* Spinner */
+.spinner {
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(2px);
+  animation: rotate 2s linear infinite;
 }
-.sntr-modal-content {
-  position: absolute;
-  min-width: 575px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 24px;
-  background: #dadada;
-  border-radius: 8px;
+.spinner .path {
+  stroke: inherit;
+  stroke-linecap: round;
+  animation: dash 1.5s ease-in-out infinite;
 }
-.sntr-modal-close-ico {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 34px;
-  height: 34px;
-  top: 0;
-  right: 0;
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-/* Typography */
-.sntr-h1,
-.sntr-h2,
-.sntr-h3,
-.sntr-h4,
-.sntr-h5,
-.sntr-h6 {
-  margin: 0;
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
 }
 /* Button */
 .sntr-btn {

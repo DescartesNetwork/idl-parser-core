@@ -1,7 +1,8 @@
 import { Idl } from '@project-serum/anchor'
 export class IdlParser {
   static getProgramAddress(IdlData: Idl) {
-    return IdlData.metadata.address || ''
+    if (!IdlData.metadata || !IdlData.metadata.address) return ''
+    return IdlData.metadata.address
   }
   static getTypeOfParam(type: any): string {
     if (typeof type === 'string') return type

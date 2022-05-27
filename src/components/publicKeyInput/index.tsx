@@ -6,13 +6,14 @@ import ContextAccount from './contextAccount'
 import IdlAccount from './idlAccount'
 import TokenAccount from './tokenAccount'
 import Pda from './pda'
-import Modal from '../../modal'
-import Input from '../../input'
-import Button from '../../button'
-import Typography from '../../typography'
+import Input from '../input'
+import Button from '../button'
+import Modal from '../modal'
+import Typography from '../typography'
+import Select from '../select'
 
-import { ParserSystemOptions } from '../../constants'
 import { AccountsMeta } from '../../providers/parser.provider'
+import { ParserSystemOptions } from '../../constants'
 
 type PubicKeyInputProps = {
   name: string
@@ -77,24 +78,23 @@ const PublicKeyInput = ({
 
   return (
     <div className="flex flex-col">
-      <div>
-        <span style={{ textTransform: 'capitalize' }}>{name}</span>
-      </div>
+      <Typography className="capitalize text-gray-400">{name}</Typography>
       <div className="flex flex-nowrap gap-[16px]">
         <Input
           className="flex-auto"
           value={value}
-          onChange={onChangePublicKey}
+          placeholder=""
+          onValue={onChangePublicKey}
           suffix={
             <Button type="text" onClick={() => setVisible(true)}>
               <Typography level={5}>Init</Typography>
             </Button>
           }
         />
-        <select
-          style={{ textTransform: 'capitalize', minWidth: 120 }}
+        <Select
+          style={{ minWidth: 120 }}
           defaultValue={ParserSystemOptions.system}
-          onChange={(e) => setSystemSelected(e.target.value)}
+          onValue={setSystemSelected}
         >
           {SELECT_SYSTEM.map((item, idx) => (
             <option
@@ -105,14 +105,14 @@ const PublicKeyInput = ({
               {item}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
       {/* Advanced input */}
-      {systemSelected}
       <Modal visible={visible} onClose={() => setVisible(false)}>
-        <Typography level={5}>{name}</Typography>
-        <Typography>{name}</Typography>
-        <ModalView selected={systemSelected} onChange={onChangePublicKey} />
+        <div className="flex flex-col gap-6">
+          <Typography level={5}>{name}</Typography>
+          <ModalView selected={systemSelected} onChange={onChangePublicKey} />
+        </div>
       </Modal>
     </div>
   )

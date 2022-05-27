@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { utils, web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
-import Button from '../../button'
+import Button from '../button'
 import PublicKeyInput from './index'
 
 const TokenAccount = ({ onChange }: { onChange: (val: string) => void }) => {
@@ -27,34 +27,31 @@ const TokenAccount = ({ onChange }: { onChange: (val: string) => void }) => {
     }
   }, [mint, owner, validConfirm])
 
+  useEffect(() => {
+    getTokenAccountAddress()
+  }, [getTokenAccountAddress])
+
   return (
-    <div>
-      <div>
-        <PublicKeyInput
-          name="Mint"
-          value={mint}
-          onChange={(e) => setMint(e.publicKey)}
-        />
-      </div>
-      <div>
-        <PublicKeyInput
-          name="Owner"
-          value={owner}
-          onChange={(e) => setOwner(e.publicKey)}
-        />
-      </div>
+    <div className="flex flex-col gap-4">
+      <PublicKeyInput
+        name="Mint"
+        value={mint}
+        onChange={(e) => setMint(e.publicKey)}
+      />
+      <PublicKeyInput
+        name="Owner"
+        value={owner}
+        onChange={(e) => setOwner(e.publicKey)}
+      />
       {/* Token account generated  */}
       {tokenAccount && <div>Address: {tokenAccount}</div>}
-      <div>
-        <Button onClick={getTokenAccountAddress} disabled={!validConfirm}>
-          Fetch PDA
-        </Button>
-      </div>
-      <div>
-        <Button onClick={() => onChange(tokenAccount)} disabled={!tokenAccount}>
-          Done
-        </Button>
-      </div>
+      <Button
+        onClick={() => onChange(tokenAccount)}
+        disabled={!tokenAccount}
+        block
+      >
+        Done
+      </Button>
     </div>
   )
 }

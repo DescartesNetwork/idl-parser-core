@@ -1,15 +1,15 @@
-import { CSSProperties, ReactNode } from 'react'
+import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react'
 
 type InputProps = {
   value: string
-  onChange: (value: string) => void
+  onValue: (value: string) => void
   suffix?: ReactNode
   preffix?: ReactNode
   bordered?: boolean
   style?: CSSProperties
   bodyStyle?: CSSProperties
   className?: string
-}
+} & InputHTMLAttributes<Element>
 
 const Input = ({
   value,
@@ -18,27 +18,24 @@ const Input = ({
   preffix,
   style,
   bodyStyle,
-  onChange,
+  onValue,
   className = '',
 }: InputProps) => {
-  const ipBorder = bordered
-    ? { border: '1px solid', borderRadius: 8, padding: '6px 14px' }
-    : { border: 'none' }
+  const clnBorder = bordered
+    ? 'border border-inherit rounded-[8px] py-[6px] px-[14px]'
+    : 'border-none'
   const cln = 'flex flex-nowrap justify-between gap-2'
 
   return (
-    <div className={`${cln} ${className}`} style={{ ...ipBorder, ...style }}>
+    <div className={`${cln} ${className} ${clnBorder}`} style={{ ...style }}>
       {preffix}
       <input
-        className="flex-auto"
+        className="flex-auto w-full border-none outline-none bg-inherit"
         style={{
-          border: 'none',
-          outline: 'none',
-          background: 'inherit',
           ...bodyStyle,
         }}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onValue(e.target.value)}
       />
       {suffix}
     </div>

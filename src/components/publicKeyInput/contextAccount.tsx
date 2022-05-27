@@ -1,6 +1,6 @@
-import { Fragment } from 'react'
-
-import Button from '../../button'
+import Button from '../button'
+import Input from '../input'
+import Empty from '../empty'
 
 import { useParser } from '../../providers/parser.provider'
 
@@ -12,23 +12,16 @@ const ContextAccount = ({ onClick }: { onClick: (val: string) => void }) => {
   return (
     <div>
       {!Object.keys(accountsMeta).length ? (
-        <div>Empty</div>
+        <Empty />
       ) : (
         Object.keys(accountsMeta).map((key, idx) => {
           const val = accountsMeta?.[key].publicKey
           return (
-            <Fragment key={idx}>
-              <div>
-                <span>{key}</span>
-              </div>
-
-              <div>
-                <input value={val} />
-              </div>
-              <div>
-                <Button onClick={() => onClick(val)}>Select</Button>
-              </div>
-            </Fragment>
+            <div className="flex flex-col gap-2" key={idx}>
+              <span>{key}</span>
+              <Input value={val} onValue={() => {}} />
+              <Button onClick={() => onClick(val)}>Select</Button>
+            </div>
           )
         })
       )}

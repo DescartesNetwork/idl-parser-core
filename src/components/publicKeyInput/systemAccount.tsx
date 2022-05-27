@@ -1,6 +1,6 @@
 import { utils, web3 } from '@project-serum/anchor'
 
-import Button from '../../button'
+import Button from '../button'
 
 const SYSTEM_ACCOUNTS = [
   { name: 'systemProgram', value: web3.SystemProgram.programId },
@@ -11,10 +11,10 @@ const SYSTEM_ACCOUNTS = [
 
 const SystemAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-4">
       {SYSTEM_ACCOUNTS.map((account, idx) => (
         <div key={idx}>
-          <Button onClick={() => onChange(account.value.toBase58())}>
+          <Button onClick={() => onChange(account.value.toBase58())} block>
             {account.name}
           </Button>
         </div>
@@ -24,6 +24,7 @@ const SystemAccount = ({ onChange }: { onChange: (val: string) => void }) => {
           onClick={() =>
             onChange('BkLRcJucoTF9GnxQUa94fkqZdoL9LTWCoT5gF54zVsJk')
           }
+          block
         >
           Wallet Address
         </Button>

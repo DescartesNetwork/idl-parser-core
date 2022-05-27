@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { IdlType } from '@project-serum/anchor/dist/cjs/idl'
 
 import ParamInput from './index'
-import Button from '../../button'
+import Button from '../button'
 
 const ArrayInput = ({
   idlType,
@@ -31,27 +31,21 @@ const ArrayInput = ({
   }
 
   return (
-    <div>
-      <div>
-        <Button onClick={() => onAdd()}>Add</Button>
-      </div>
+    <div className="flex flex-col gap-6">
+      <Button onClick={() => onAdd()}>Add</Button>
+
       {values.map((val, idx) => {
         return (
-          <div key={idx}>
-            <ParamInput
-              idlType={idlType}
-              name={String(idx)}
-              value={val}
-              onChange={(data) => onChangeValues(idx, data)}
-            />
-          </div>
+          <ParamInput
+            idlType={idlType}
+            name={String(idx)}
+            value={val}
+            onChange={(data) => onChangeValues(idx, data)}
+            key={idx}
+          />
         )
       })}
-      {!!values.length && (
-        <div>
-          <Button onClick={() => onOk()}>Done</Button>
-        </div>
-      )}
+      {!!values.length && <Button onClick={() => onOk()}>Done</Button>}
     </div>
   )
 }

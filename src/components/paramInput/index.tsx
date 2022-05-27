@@ -4,10 +4,11 @@ import { IdlType } from '@project-serum/anchor/dist/cjs/idl'
 import DefinedInput from './definedInput'
 import PublicKeyInput, { SELECT_SYSTEM } from '../publicKeyInput'
 import ArrayInput from './arrayInput'
-import Typography from '../../typography'
-import Modal from '../../modal'
-import Input from '../../input'
-import Button from '../../button'
+import Input from '../input'
+import Button from '../button'
+import Typography from '../typography'
+import Modal from '../modal'
+import Select from '../select'
 
 import { useParser } from '../../providers/parser.provider'
 import { ParserSystemOptions } from '../../constants'
@@ -85,35 +86,28 @@ const ParamInput = ({
   return (
     <div>
       {idlType === 'publicKey' ? (
-        <div>
-          <PublicKeyInput
-            name={name}
-            onChange={(acc) => onChange(acc.publicKey)}
-            value={value}
-          />
-        </div>
+        <PublicKeyInput
+          name={name}
+          onChange={(acc) => onChange(acc.publicKey)}
+          value={value}
+        />
       ) : (
-        <Fragment>
-          <div>
-            <Typography style={{ textTransform: 'capitalize' }}>
-              {name}
-            </Typography>
-          </div>
-          <div className="flex flex-nowrap justify-between gap-[6px]">
+        <div>
+          <Typography className="capitalize text-gray-400">{name}</Typography>
+          <div className="flex flex-nowrap justify-between gap-[16px]">
             <Input
               className="flex-auto"
               value={value}
-              onChange={onChange}
+              onValue={onChange}
               suffix={
                 <Button type="text" onClick={() => setVisible(true)}>
                   <Typography level={5}>Init</Typography>
                 </Button>
               }
             />
-            <select
+            <Select
+              onValue={setSystemSelected}
               defaultValue={systemSelected}
-              onChange={(e) => setSystemSelected(e.target.value)}
-              disabled
               style={{ minWidth: 120 }}
             >
               {SELECT_SYSTEM.map((item, idx) => (
@@ -121,9 +115,9 @@ const ParamInput = ({
                   {item}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
-        </Fragment>
+        </div>
       )}
       {/* Advanced input */}
       {!NORMAL_TYPES.includes(idlType.toString()) && (

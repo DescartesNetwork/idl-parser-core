@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
 import PubicKeyInput from './index'
-import Button from '../../button'
+import Button from '../button'
+import Typography from '../typography'
 
 import { useParser } from '../../providers/parser.provider'
 
@@ -40,35 +41,30 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
     setPdaAddress(pdaAddress.toBase58())
   }, [programAddress, seeds])
 
+  useEffect(() => {
+    deriveNewPDAAddress()
+  }, [deriveNewPDAAddress])
+
   return (
-    <div>
-      <div>
-        <Button onClick={() => onAdd()}>Add</Button>
-      </div>
+    <div className="flex flex-col gap-5">
+      <Button type="dashed" onClick={() => onAdd()}>
+        Add
+      </Button>
 
       {seeds.map((val, idx) => {
         return (
-          <div>
-            <PubicKeyInput
-              value={val}
-              name={'seed ' + (idx + 1)}
-              onChange={(val) => onChangeInput(idx, val.publicKey)}
-            />
-          </div>
+          <PubicKeyInput
+            value={val}
+            name={'seed ' + (idx + 1)}
+            onChange={(val) => onChangeInput(idx, val.publicKey)}
+          />
         )
       })}
 
-      {pdaAddress && <div>PDA Address: {pdaAddress}</div>}
-      <div>
-        <Button onClick={deriveNewPDAAddress} disabled={!seeds.length}>
-          Fetch PDA
-        </Button>
-      </div>
-      <div>
-        <Button onClick={() => onChange(pdaAddress)} disabled={!pdaAddress}>
-          Done
-        </Button>
-      </div>
+      {pdaAddress && <Typography>PDA Address: {pdaAddress}</Typography>}
+      <Button onClick={() => onChange(pdaAddress)} disabled={!pdaAddress} block>
+        Done
+      </Button>
     </div>
   )
 }

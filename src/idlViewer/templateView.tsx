@@ -1,4 +1,4 @@
-import Button from '../button'
+import Button from '../components/button'
 
 import { useParser } from '../providers/parser.provider'
 
@@ -9,13 +9,11 @@ const TemplateView = () => {
   } = useParser()
 
   return (
-    <div className="grid gap-4 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+    <div className="grid gap-4 xs:grid-cols-1 md:grid-cols-2">
       {idl?.instructions.map((instruc, idx) => (
-        <div key={idx}>
-          <Button onClick={() => setInstruction(instruc.name)} block>
-            {instruc.name}
-          </Button>
-        </div>
+        <Button onClick={() => setInstruction(instruc.name)} block key={idx}>
+          {instruc.name}
+        </Button>
       ))}
     </div>
   )
