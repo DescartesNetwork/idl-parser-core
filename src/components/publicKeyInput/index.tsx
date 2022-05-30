@@ -67,15 +67,6 @@ const PublicKeyInput = ({
     setVisible(false)
   }
 
-  const onNewKeypair = () => {
-    const newKeypair = web3.Keypair.generate()
-    onChange({
-      publicKey: newKeypair.publicKey.toBase58(),
-      privateKey: Buffer.from(newKeypair.secretKey).toString('hex'),
-    })
-    setVisible(false)
-  }
-
   return (
     <div className="flex flex-col">
       <Typography className="capitalize text-gray-400">{name}</Typography>

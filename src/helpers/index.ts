@@ -1,4 +1,6 @@
-import { Idl } from '@project-serum/anchor'
+import { Idl, AnchorProvider, web3 } from '@project-serum/anchor'
+import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet'
+import { Connection } from '@solana/web3.js'
 export class IdlParser {
   static getProgramAddress(IdlData: Idl) {
     if (!IdlData.metadata || !IdlData.metadata.address) return ''
@@ -17,4 +19,13 @@ export class IdlParser {
     }
     return '-'
   }
+}
+
+export const getAnchorProvider = (connection: Connection) => {
+  const keyPair = web3.Keypair.generate()
+  const wallet = new NodeWallet(keyPair)
+  return new AnchorProvider(connection, wallet, {
+    commitment: 'confirmed',
+    skipPreflight: true,
+  })
 }

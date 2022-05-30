@@ -12,6 +12,8 @@ import {
 } from 'react'
 import { Idl } from '@project-serum/anchor'
 import { IdlInstruction } from '@project-serum/anchor/dist/cjs/idl'
+import { Connection } from '@solana/web3.js'
+
 import { IdlParser } from '../helpers'
 
 const Context = createContext<ParserProvider>({} as ParserProvider)
@@ -40,6 +42,8 @@ export type ParserProvider = {
   setArgsMeta: (args: SetArgsMetaState) => void
   setAccountsMeta: (args: SetAccountsMetaState) => void
   removeIdl: () => void
+  connection: Connection
+  walletAddress?: string
 }
 
 const DEFAULT_IDL = {
@@ -51,9 +55,17 @@ const DEFAULT_IDL = {
   accountsMeta: {},
 }
 
-type IDLContextProviderProps = { children: ReactNode }
+type IDLContextProviderProps = {
+  children: ReactNode
+  connection: Connection
+  walletAddress?: string
+}
 
-const IDLParserContextProvider = ({ children }: IDLContextProviderProps) => {
+const IDLParserContextProvider = ({
+  children,
+  connection,
+  walletAddress,
+}: IDLContextProviderProps) => {
   const [parserData, setParserData] = useState<IDLParserState>(
     DEFAULT_IDL as IDLParserState,
   )
@@ -117,6 +129,8 @@ const IDLParserContextProvider = ({ children }: IDLContextProviderProps) => {
       setArgsMeta,
       setAccountsMeta,
       removeIdl,
+      connection,
+      walletAddress,
     }),
     [
       parserData,
@@ -125,6 +139,8 @@ const IDLParserContextProvider = ({ children }: IDLContextProviderProps) => {
       setArgsMeta,
       setInstruction,
       uploadIdl,
+      connection,
+      walletAddress,
     ],
   )
 

@@ -11,14 +11,16 @@ const EnumInput = ({
   onChange: (val: string) => void
 }) => {
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-4">
       {enumType.variants?.map((variant) => {
         return (
-          <div key={variant.name}>
-            <Input value={variant.name} onValue={() => {}} />
-            <Button onClick={() => onChange(variant.name)} block>
-              Done
-            </Button>
+          <div className="flex flex-row gap-4" key={variant.name}>
+            <Input
+              className="flex-auto"
+              value={variant.name}
+              onValue={() => {}}
+            />
+            <Button onClick={() => onChange(variant.name)}>Select</Button>
           </div>
         )
       })}

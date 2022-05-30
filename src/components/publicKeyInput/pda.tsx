@@ -11,9 +11,8 @@ import { useParser } from '../../providers/parser.provider'
 const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
   const [seeds, setSeeds] = useState<string[]>([])
   const [pdaAddress, setPdaAddress] = useState('')
-  const {
-    parser: { programAddress },
-  } = useParser()
+  const { parser } = useParser()
+  const { programAddress } = parser || {}
 
   const onAdd = () => {
     const newSeed = [...seeds]

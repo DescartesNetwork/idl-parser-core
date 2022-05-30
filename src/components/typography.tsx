@@ -12,6 +12,7 @@ type TypographyProps = {
   children?: ReactNode
   className?: string
   style?: CSSProperties
+  secondary?: boolean
 } & ClassAttributes<Element> &
   DOMAttributes<Element>
 
@@ -20,10 +21,11 @@ const Typography = ({
   className = '',
   children,
   style,
+  secondary = false,
   ...props
 }: TypographyProps) => {
   const typoType = !!level ? `h${level}` : 'span'
-  const customStyle = { display: 'block' }
+  const customStyle = { display: 'block', opacity: secondary ? 0.5 : 1 }
 
   return createElement(
     typoType,

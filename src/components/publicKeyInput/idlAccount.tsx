@@ -1,31 +1,36 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Program, web3 } from '@project-serum/anchor'
+import IonIcon from '@sentre/antd-ionicon'
 
-import Button from '../button'
-
-import { useParser } from '../../providers/parser.provider'
+import Button, { Spinner } from '../button'
 import Select from '../select'
 import Input from '../input'
+import Empty from '../empty'
+import Typography from '../typography'
+
+import { useParser } from '../../providers/parser.provider'
+import { getAnchorProvider } from '../../helpers'
 
 const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   const [address, setAddress] = useState('')
+  const [loading, setLoading] = useState(false)
   const [accountType, setAccountType] = useState('')
   const [accountsViewer, setAccountsViewer] = useState<
     Record<string, string[]>
   >({})
-  const {
-    parser: { idl, programAddress },
-  } = useParser()
+  const { parser, connection } = useParser()
+  const { idl, programAddress } = parser || {}
 
   const getProgram = useCallback(() => {
     if (!idl || !programAddress) return
-    const provider = undefined
+    const provider = getAnchorProvider(connection)
     const program = new Program(idl, programAddress, provider)
     return program
   }, [idl, programAddress])
 
   const onFetchAccountData = useCallback(async () => {
     try {
+      setLoading(true)
       const program = getProgram()
       if (!program || !accountType || !address) return
       const accountPublicKey = new web3.PublicKey(address)
@@ -55,7 +60,9 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
       }
       setAccountsViewer(newIdlAccountData)
     } catch (error) {
-      console.log(error)
+      setAccountsViewer({})
+    } finally {
+      setLoading(false)
     }
   }, [accountType, address, getProgram])
 
@@ -69,38 +76,58 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   }, [accountType, idl?.accounts])
 
   return (
-    <div className="flex flex-col gap-3">
-      <Select
-        value={accountType}
-        style={{ minWidth: 120, minHeight: 32 }}
-        onValue={() => {}}
-      >
-        {idl?.accounts?.map((acc, idx) => {
-          return (
-            <option value={acc.name} key={idx}>
-              {acc.name}
-            </option>
-          )
-        })}
-      </Select>
-      <div>
-        <span>Address</span>
-        <Input value={address} onValue={setAddress} />
+    <div className="flex flex-col gap-8">
+      <div className="grid grid-cols-1 gap-1">
+        <Typography secondary>{accountType} address</Typography>
+        <div className="flex flex-row gap-4">
+          <Input
+            value={address}
+            onValue={setAddress}
+            preffix={loading ? <Spinner /> : <IonIcon name="search-outline" />}
+            className="flex-auto stroke-slate-500"
+          />
+          <Select
+            value={accountType}
+            style={{ minWidth: 120, minHeight: 32 }}
+            onValue={() => {}}
+          >
+            {idl?.accounts?.map((acc, idx) => {
+              return (
+                <option value={acc.name} key={idx}>
+                  {acc.name}
+                </option>
+              )
+            })}
+          </Select>
+        </div>
       </div>
 
-      {Object.keys(accountsViewer).map((key) => {
-        if (!accountsViewer[key].length) return null
-        return (
-          <div key={key}>
-            {accountsViewer[key].map((val) => (
-              <div>
-                <Input value={val} onValue={() => {}} />
-                <Button onClick={() => onChange(val)}>Select</Button>
+      <div className="grid gird-cols-1 gap-4 p-[24px] bg-stone-100">
+        {!!Object.keys(accountsViewer).length ? (
+          Object.keys(accountsViewer).map((key, idx) => {
+            if (!accountsViewer[key].length) return null
+            return (
+              <div className="grid gird-cols-1 gap-1" key={idx}>
+                <Typography secondary>{key}</Typography>
+                <div className="grid gird-cols-1 gap-2">
+                  {accountsViewer[key].map((val) => (
+                    <div className="flex flex-row gap-4">
+                      <Input
+                        className="flex-auto"
+                        value={val}
+                        onValue={() => {}}
+                      />
+                      <Button onClick={() => onChange(val)}>Select</Button>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
-        )
-      })}
+            )
+          })
+        ) : (
+          <Empty />
+        )}
+      </div>
     </div>
   )
 }

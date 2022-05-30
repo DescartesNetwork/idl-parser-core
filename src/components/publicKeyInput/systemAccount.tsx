@@ -1,4 +1,5 @@
 import { utils, web3 } from '@project-serum/anchor'
+import { useParser } from '../../providers/parser.provider'
 
 import Button from '../button'
 
@@ -10,6 +11,8 @@ const SYSTEM_ACCOUNTS = [
 ]
 
 const SystemAccount = ({ onChange }: { onChange: (val: string) => void }) => {
+  const { walletAddress } = useParser()
+
   return (
     <div className="grid grid-cols-2 gap-4">
       {SYSTEM_ACCOUNTS.map((account, idx) => (
@@ -21,10 +24,9 @@ const SystemAccount = ({ onChange }: { onChange: (val: string) => void }) => {
       ))}
       <div>
         <Button
-          onClick={() =>
-            onChange('BkLRcJucoTF9GnxQUa94fkqZdoL9LTWCoT5gF54zVsJk')
-          }
+          onClick={() => onChange(walletAddress || '')}
           block
+          disabled={!walletAddress}
         >
           Wallet Address
         </Button>

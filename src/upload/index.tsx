@@ -9,11 +9,9 @@ import InstructionView from '../idlViewer/instructionView'
 import { useParser } from '../providers/parser.provider'
 
 const UploadIdl = () => {
-  const {
-    parser: { idl },
-    removeIdl,
-  } = useParser()
   const [visible, setVisible] = useState(false)
+  const { parser, removeIdl } = useParser()
+  const { idl } = parser || {}
 
   const onClose = () => {
     setVisible(false)
