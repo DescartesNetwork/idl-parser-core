@@ -65,7 +65,7 @@ const GenerateInstruction = () => {
 
   return (
     <div>
-      <Button onClick={onInit} block loading={loading}>
+      <Button type="primary" onClick={onInit} block loading={loading}>
         Generate Instruction
       </Button>
     </div>

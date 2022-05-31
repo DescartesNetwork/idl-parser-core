@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import Empty from '../components/empty'
 
-import ParamInput from '../components/paramInput'
-import PublicKeyInput from '../components/publicKeyInput'
-import Segmented from '../components/segmented'
+import { Empty, ParamInput, PublicKeyInput, Segmented } from '../components'
 
 import { useParser } from '../providers/parser.provider'
+
+enum Tabs {
+  Accounts = 'accounts',
+  Arguments = 'arguments',
+}
 
 export const InstructorAccounts = () => {
   const {
@@ -35,7 +37,6 @@ export const InstructorArguments = () => {
     parser: { instructionIdl, argsMeta },
     setArgsMeta,
   } = useParser()
-
   if (!instructionIdl?.args.length) return <Empty />
 
   return (
@@ -52,14 +53,6 @@ export const InstructorArguments = () => {
     </div>
   )
 }
-type InstrucSegmentedType = 'accounts' | 'arguments'
-
-const INSTRUCTIONS = {
-  accounts: <InstructorAccounts />,
-  arguments: <InstructorArguments />,
-}
-
-const TAB_INSTRUCS = ['accounts', 'arguments']
 
 const InstructionView = () => {
   const [selected, setSelected] = useState('accounts')
@@ -73,11 +66,14 @@ const InstructionView = () => {
       <div>
         <Segmented
           value={selected}
-          options={TAB_INSTRUCS}
+          options={[Tabs.Accounts, Tabs.Arguments]}
           onChange={setSelected}
         />
       </div>
-      <div>{INSTRUCTIONS[selected as InstrucSegmentedType]}</div>
+      <div>
+        {selected === Tabs.Accounts && <InstructorAccounts />}
+        {selected === Tabs.Arguments && <InstructorArguments />}
+      </div>
     </div>
   )
 }
