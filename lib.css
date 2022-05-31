@@ -33,19 +33,11 @@
     stroke-dashoffset: -124;
   }
 }
-/* Button */
-.sntr-btn {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 16px;
-  border: 1px;
-  border-color: inherit;
-  background: inherit;
-  cursor: pointer;
+/* Disabled */
+*:disabled {
+  opacity: 0.5;
 }
+
 /* Segmented */
 .sntr-segmented {
   box-sizing: border-box;
@@ -116,4 +108,12 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   word-break: keep-all;
+}
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
 }

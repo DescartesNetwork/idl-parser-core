@@ -13,12 +13,19 @@ import {
 import { Idl } from '@project-serum/anchor'
 import { IdlInstruction } from '@project-serum/anchor/dist/cjs/idl'
 import { Connection } from '@solana/web3.js'
+import { web3 } from '@project-serum/anchor'
 
 import { IdlParser } from '../helpers'
 
 const Context = createContext<ParserProvider>({} as ParserProvider)
-
 export type SystemSelected = 'context' | 'system' | 'idl' | 'token' | 'pda'
+
+export type TransactionInstruction = web3.TransactionInstruction
+export type SetExportTxInstruction = {
+  name: string
+  data: TransactionInstruction
+}
+
 export type AccountsMeta = {
   publicKey: string
   privateKey?: string
@@ -42,8 +49,10 @@ export type ParserProvider = {
   setArgsMeta: (args: SetArgsMetaState) => void
   setAccountsMeta: (args: SetAccountsMetaState) => void
   removeIdl: () => void
+  setTxInstructions: (args?: SetExportTxInstruction) => void
   connection: Connection
   walletAddress?: string
+  txInstructions?: Record<string, TransactionInstruction>
 }
 
 const DEFAULT_IDL = {
@@ -69,6 +78,7 @@ const IDLParserContextProvider = ({
   const [parserData, setParserData] = useState<IDLParserState>(
     DEFAULT_IDL as IDLParserState,
   )
+  const [txInstruct, setTxInstruct] = useState({})
 
   const uploadIdl = useCallback(
     (idl: Idl) => {
@@ -121,6 +131,20 @@ const IDLParserContextProvider = ({
     [parserData],
   )
 
+  const setTxInstructions = useCallback(
+    (args?: SetExportTxInstruction) => {
+      let nextData: Record<string, TransactionInstruction> = JSON.parse(
+        JSON.stringify(txInstruct),
+      )
+      if (!!args) {
+        const { name, data } = args
+        nextData[name] = data
+      }
+      return setTxInstruct({ ...nextData })
+    },
+    [txInstruct],
+  )
+
   const provider = useMemo(
     () => ({
       parser: parserData,
@@ -129,16 +153,20 @@ const IDLParserContextProvider = ({
       setArgsMeta,
       setAccountsMeta,
       removeIdl,
+      setTxInstructions,
+      txInstructions: txInstruct,
       connection,
       walletAddress,
     }),
     [
       parserData,
-      removeIdl,
-      setAccountsMeta,
-      setArgsMeta,
       setInstruction,
       uploadIdl,
+      setArgsMeta,
+      setAccountsMeta,
+      removeIdl,
+      setTxInstructions,
+      txInstruct,
       connection,
       walletAddress,
     ],

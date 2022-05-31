@@ -21,7 +21,7 @@ const Select = ({
   return (
     <select
       onChange={(e) => onValue(e.target.value)}
-      className={cln + 'rounded-[8px] px-[8px]'}
+      className={cln + 'rounded-[4px] px-2 bg-[#E0E0E0]'}
       style={{ ...style }}
       {...props}
     >

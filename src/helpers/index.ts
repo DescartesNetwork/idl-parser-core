@@ -1,6 +1,7 @@
 import { Idl, AnchorProvider, web3 } from '@project-serum/anchor'
 import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet'
-import { Connection } from '@solana/web3.js'
+import { Connection, PublicKey } from '@solana/web3.js'
+import { AccountsMeta } from '../providers/parser.provider'
 export class IdlParser {
   static getProgramAddress(IdlData: Idl) {
     if (!IdlData.metadata || !IdlData.metadata.address) return ''
@@ -28,4 +29,16 @@ export const getAnchorProvider = (connection: Connection) => {
     commitment: 'confirmed',
     skipPreflight: true,
   })
+}
+
+export const convertStringDataToPubKey = (
+  data: Record<string, AccountsMeta>,
+): Record<string, PublicKey> => {
+  if (!data) throw new Error('Valid data')
+  const nextDataPubKey: Record<string, PublicKey> = {}
+
+  for (const key in data) {
+    nextDataPubKey[key] = new web3.PublicKey(data[key])
+  }
+  return nextDataPubKey
 }

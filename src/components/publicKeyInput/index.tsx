@@ -76,6 +76,7 @@ const PublicKeyInput = ({
           value={value}
           placeholder=""
           onValue={onChangePublicKey}
+          bordered={false}
           suffix={
             <Button type="text" onClick={() => setVisible(true)}>
               <Typography level={5}>Init</Typography>

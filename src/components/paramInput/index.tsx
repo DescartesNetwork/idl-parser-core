@@ -12,6 +12,7 @@ import Select from '../select'
 
 import { useParser } from '../../providers/parser.provider'
 import { ParserSystemOptions } from '../../constants'
+import { IdlParser } from '../../helpers'
 
 const NORMAL_TYPES = [
   'u8',
@@ -83,6 +84,8 @@ const ParamInput = ({
     setVisible(false)
   }
 
+  const isExistIdlType = !NORMAL_TYPES.includes(idlType.toString())
+
   return (
     <div>
       {idlType === 'publicKey' ? (
@@ -92,35 +95,30 @@ const ParamInput = ({
           value={value}
         />
       ) : (
-        <div>
-          <Typography className="capitalize text-gray-400">{name}</Typography>
-          <div className="flex flex-nowrap justify-between gap-[16px]">
-            <Input
-              className="flex-auto"
-              value={value}
-              onValue={onChange}
-              suffix={
+        <div className="grid gird-cols-1 gap-1">
+          <div className="flex flex-row gap-2">
+            <Typography className="capitalize text-gray-400">{name}</Typography>
+            <Typography secondary>
+              ({IdlParser.getTypeOfParam(idlType)})
+            </Typography>
+          </div>
+          <Input
+            className="flex-auto"
+            value={value}
+            onValue={onChange}
+            bordered={false}
+            suffix={
+              isExistIdlType && (
                 <Button type="text" onClick={() => setVisible(true)}>
                   <Typography level={5}>Init</Typography>
                 </Button>
-              }
-            />
-            <Select
-              onValue={setSystemSelected}
-              defaultValue={systemSelected}
-              style={{ minWidth: 120 }}
-            >
-              {SELECT_SYSTEM.map((item, idx) => (
-                <option value={item} key={idx}>
-                  {item}
-                </option>
-              ))}
-            </Select>
-          </div>
+              )
+            }
+          />
         </div>
       )}
       {/* Advanced input */}
-      {!NORMAL_TYPES.includes(idlType.toString()) && (
+      {isExistIdlType && (
         <Modal visible={visible} onClose={() => setVisible(false)}>
           <span>{name}</span>
           <WrapInput

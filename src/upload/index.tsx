@@ -7,10 +7,11 @@ import Modal from '../components/modal'
 import InstructionView from '../idlViewer/instructionView'
 
 import { useParser } from '../providers/parser.provider'
+import GenerateInstruction from '../generateInstruction'
 
 const UploadIdl = () => {
   const [visible, setVisible] = useState(false)
-  const { parser, removeIdl } = useParser()
+  const { parser, removeIdl, txInstructions } = useParser()
   const { idl } = parser || {}
 
   const onClose = () => {
@@ -22,6 +23,7 @@ const UploadIdl = () => {
     if (!!idl) return setVisible(true)
     else return setVisible(false)
   }, [idl])
+  console.log(txInstructions, 'txInstructions')
 
   return (
     <div>
@@ -32,16 +34,19 @@ const UploadIdl = () => {
         onClose={onClose}
         closable={false}
       >
-        <div className="grid xs:grid-cols-1 md:grid-cols-2 gap-6 min-h-[300px]">
-          <div className="flex flex-col gap-5">
-            <div className="bg-slate-50 p-4">
-              <ViewUploaded />
+        <div className="grid grid-cols-1 gap-4">
+          <div className="grid xs:grid-cols-1 md:grid-cols-2 gap-6 min-h-[300px]">
+            <div className="flex flex-col gap-5">
+              <div className="bg-slate-50 p-4">
+                <ViewUploaded />
+              </div>
+              <div className="bg-slate-50 p-4 h-full">
+                <TemplateView />
+              </div>
             </div>
-            <div className="bg-slate-50 p-4 h-full">
-              <TemplateView />
-            </div>
+            <InstructionView />
           </div>
-          <InstructionView />
+          <GenerateInstruction />
         </div>
       </Modal>
     </div>
