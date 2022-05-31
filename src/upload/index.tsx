@@ -29,7 +29,7 @@ const UploadIdl = () => {
     <div>
       <UploadFIle />
       <Modal
-        className="!sm:w-full !lg:w-[900px]"
+        className="sm:!w-full lg:!w-[900px]"
         visible={visible}
         onClose={onClose}
         closable={false}

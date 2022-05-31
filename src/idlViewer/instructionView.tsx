@@ -10,10 +10,8 @@ enum Tabs {
 }
 
 export const InstructorAccounts = () => {
-  const {
-    parser: { accountsMeta, instructionIdl },
-    setAccountsMeta,
-  } = useParser()
+  const { parser, setAccountsMeta } = useParser()
+  const { accountsMeta, instructionIdl } = parser || {}
 
   if (!instructionIdl?.accounts.length) return <Empty />
   return (
@@ -33,10 +31,9 @@ export const InstructorAccounts = () => {
 }
 
 export const InstructorArguments = () => {
-  const {
-    parser: { instructionIdl, argsMeta },
-    setArgsMeta,
-  } = useParser()
+  const { parser, setArgsMeta } = useParser()
+  const { instructionIdl, argsMeta } = parser || {}
+
   if (!instructionIdl?.args.length) return <Empty />
 
   return (
@@ -56,9 +53,8 @@ export const InstructorArguments = () => {
 
 const InstructionView = () => {
   const [selected, setSelected] = useState('accounts')
-  const {
-    parser: { idl },
-  } = useParser()
+  const { parser } = useParser()
+  const { idl } = parser || {}
 
   if (!idl) return <Empty />
   return (

@@ -3,6 +3,7 @@ import { Program, web3 } from '@project-serum/anchor'
 import { PublicKey } from '@solana/web3.js'
 
 import Button from '../components/button'
+import ViewTxInstructions from './viewTxInstructions'
 
 import { useParser } from '../providers/parser.provider'
 import { convertStringDataToPubKey, getAnchorProvider } from '../helpers'
@@ -64,10 +65,11 @@ const GenerateInstruction = () => {
   }
 
   return (
-    <div>
-      <Button type="primary" onClick={onInit} block loading={loading}>
+    <div className="grid grid-cols-1 gap-4">
+      <Button onClick={onInit} block loading={loading} type="primary">
         Generate Instruction
       </Button>
+      <ViewTxInstructions />
     </div>
   )
 }
