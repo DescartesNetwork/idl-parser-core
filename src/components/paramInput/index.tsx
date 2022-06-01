@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react'
 import { IdlType } from '@project-serum/anchor/dist/cjs/idl'
 
 import DefinedInput from './definedInput'
-import PublicKeyInput, { SELECT_SYSTEM } from '../publicKeyInput'
+import PublicKeyInput from '../publicKeyInput'
 import ArrayInput from './arrayInput'
 import Input from '../input'
 import Button from '../button'
@@ -11,7 +11,7 @@ import Modal from '../modal'
 import Select from '../select'
 
 import { useParser } from '../../providers/parser.provider'
-import { ParserSystemOptions } from '../../constants'
+import { AddressCategory } from '../../constants'
 import { IdlParser } from '../../helpers'
 
 const NORMAL_TYPES = [
@@ -75,9 +75,7 @@ const ParamInput = ({
   placeholder = 'Input or select your types',
 }: ParamInputProps) => {
   const [visible, setVisible] = useState(false)
-  const [systemSelected, setSystemSelected] = useState(
-    ParserSystemOptions.system,
-  )
+  const [systemSelected, setSystemSelected] = useState(AddressCategory.system)
 
   const onChangeWrapInput = (val: string) => {
     onChange(val)

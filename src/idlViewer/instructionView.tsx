@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Empty, ParamInput, PublicKeyInput, Segmented } from '../components'
 
+import { AddressCategory } from '../constants'
 import { useParser } from '../providers/parser.provider'
 
 enum Tabs {
@@ -10,8 +11,29 @@ enum Tabs {
 }
 
 export const InstructorAccounts = () => {
-  const { parser, setAccountsMeta } = useParser()
-  const { accountsMeta, instructionIdl } = parser || {}
+  const { accountsMeta, instructionIdl, idl } = useParser().parser
+  const setAccountsMeta = useParser().setAccountsMeta
+
+  const findDefaultCategory = useCallback(
+    (accountName: string) => {
+      if (!idl) return
+      const name = accountName.toLowerCase()
+      // Check IDL accounts type
+      if (idl.accounts) {
+        for (const accountType of idl.accounts) {
+          for (const field of accountType.type.fields) {
+            if (name.includes(field.name.toLowerCase()))
+              return AddressCategory.idl
+          }
+        }
+      }
+      if (name.includes('program')) return AddressCategory.system
+      if (name.includes('tokenaccount') || name.includes('associated'))
+        return AddressCategory.token
+      return AddressCategory.system
+    },
+    [idl],
+  )
 
   if (!instructionIdl?.accounts.length) return <Empty />
   return (
@@ -24,6 +46,7 @@ export const InstructorAccounts = () => {
           name={account.name}
           value={accountsMeta[account.name]?.publicKey}
           key={idx}
+          defaultCategory={findDefaultCategory(account.name)}
         />
       ))}
     </div>
