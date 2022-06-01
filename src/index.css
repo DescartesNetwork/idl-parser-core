@@ -472,6 +472,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   visibility: visible;
 }
 
+.\!visible {
+  visibility: visible !important;
+}
+
 .static {
   position: static;
 }
@@ -514,6 +518,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .h-auto {
   height: auto;
+}
+
+.h-20 {
+  height: 5rem;
 }
 
 .h-0 {
@@ -592,6 +600,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   gap: 0.5rem;
 }
 
+.gap-1 {
+  gap: 0.25rem;
+}
+
 .gap-4 {
   gap: 1rem;
 }
@@ -608,16 +620,16 @@ Ensure the default browser behavior of the `hidden` attribute.
   gap: 1.5rem;
 }
 
-.gap-1 {
-  gap: 0.25rem;
-}
-
 .gap-\[6px\] {
   gap: 6px;
 }
 
 .gap-\[16px\] {
   gap: 16px;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .rounded-\[4px\] {
@@ -680,6 +692,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-blue-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#1A1311\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(26 19 17 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#EBEBEB\] {
@@ -773,9 +790,18 @@ Ensure the default browser behavior of the `hidden` attribute.
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
+.opacity-50 {
+  opacity: 0.5;
 }
 
 .opacity-0 {
@@ -785,6 +811,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 .outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.duration-300 {
+  transition-duration: 300ms;
 }
 
 /* Spinner */

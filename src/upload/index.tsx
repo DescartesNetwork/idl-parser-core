@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import IonIcon from '@sentre/antd-ionicon'
 
 import TemplateView from '../idlViewer/templateView'
 import UploadFIle from './uploadFile'
@@ -6,32 +7,35 @@ import ViewUploaded from './viewUploaded'
 import Modal from '../components/modal'
 import InstructionView from '../idlViewer/instructionView'
 import GenerateInstruction from '../generateInstruction'
+import Button from '../components/button'
 
 import { useParser } from '../providers/parser.provider'
 
 const UploadIdl = () => {
   const [visible, setVisible] = useState(false)
-  const { parser, removeIdl, txInstructions } = useParser()
+  const { parser, txInstructions } = useParser()
   const { idl } = parser || {}
-
-  const onClose = () => {
-    setVisible(false)
-    removeIdl()
-  }
 
   useEffect(() => {
     if (!!idl) return setVisible(true)
     else return setVisible(false)
   }, [idl])
-  console.log(txInstructions, 'txInstructions')
 
   return (
     <div>
-      <UploadFIle />
+      <div className="flex flex-row gap-4 justify-center">
+        <div className="flex-auto">
+          <UploadFIle />
+        </div>
+        <Button
+          onClick={() => setVisible(true)}
+          preffix={<IonIcon name="print-outline" />}
+        />
+      </div>
       <Modal
         className="md:!w-[95%] lg:!w-[900px]"
         visible={visible}
-        onClose={onClose}
+        onClose={() => setVisible(false)}
         closable={false}
       >
         <div className="grid grid-cols-1 gap-8">
