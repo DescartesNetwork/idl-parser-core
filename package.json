@@ -8,7 +8,8 @@
     "build": "npm run clean && npm run build:css && npm run build:minify && tsc && cp **/*.css package.json README.md ./dist",
     "build:css": "tailwindcss build lib.css -o src/index.css",
     "build:minify": "minify src/index.css > src/index.min.css",
-    "public": "npm publish ./dist"
+    "public": "npm publish ./dist",
+    "gpush": "git add . && git commit -m '_' && git pull && git push"
   },
   "repository": {
     "type": "git",
