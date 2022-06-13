@@ -65,6 +65,7 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
                 name={'Seed ' + (idx + 1)}
                 onChange={(val) => onChangeInput(idx, val.publicKey)}
                 onRemove={() => onRemove(idx)}
+                acceptRemove
                 key={idx}
               />
             )

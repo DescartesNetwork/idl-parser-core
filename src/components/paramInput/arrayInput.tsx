@@ -22,6 +22,12 @@ const ArrayInput = ({
     setValues(newValues)
   }
 
+  const onRemove = (index: number) => {
+    const newValues = [...values]
+    newValues.splice(index, 1)
+    setValues(newValues)
+  }
+
   const onChangeValues = (idx: number, val: string) => {
     const newValues = [...values]
     newValues[idx] = val
@@ -38,7 +44,6 @@ const ArrayInput = ({
       <Button type="dashed" onClick={() => onAdd()}>
         Add
       </Button>
-
       {values.map((val, idx) => {
         const name = `${inputName} ${String(idx + 1)}`
         return (
@@ -47,6 +52,8 @@ const ArrayInput = ({
             name={name}
             value={val}
             onChange={(data) => onChangeValues(idx, data)}
+            onRemove={() => onRemove(idx)}
+            acceptRemove
             key={idx}
           />
         )

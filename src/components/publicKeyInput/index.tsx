@@ -52,6 +52,7 @@ type PubicKeyInputProps = {
   bordered?: boolean
   defaultCategory?: AddressCategory
   onRemove?: () => void
+  acceptRemove?: boolean
 }
 
 const PublicKeyInput = ({
@@ -61,6 +62,7 @@ const PublicKeyInput = ({
   placeholder = 'Input or select your types',
   defaultCategory = AddressCategory.system,
   onRemove = () => {},
+  acceptRemove = false,
 }: PubicKeyInputProps) => {
   const [visible, setVisible] = useState(false)
   const [category, setCategory] = useState<AddressCategory>(defaultCategory)
@@ -102,11 +104,13 @@ const PublicKeyInput = ({
             </option>
           ))}
         </Select>
-        <Button
-          type="text"
-          onClick={onRemove}
-          suffix={<IonIcon name="trash-outline" />}
-        />
+        {acceptRemove && (
+          <Button
+            type="text"
+            onClick={onRemove}
+            suffix={<IonIcon name="trash-outline" />}
+          />
+        )}
       </div>
       {/* Advanced input */}
       <Modal

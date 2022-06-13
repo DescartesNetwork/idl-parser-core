@@ -2,10 +2,12 @@ import {
   IdlTypeDefTyEnum,
   IdlTypeDefTyStruct,
 } from '@project-serum/anchor/dist/cjs/idl'
-import { useParser } from '../../../providers/parser.provider'
 
+import Typography from '../../typography'
 import EnumInput from './enumInput'
 import StructInput from './structInput'
+
+import { useParser } from '../../../providers/parser.provider'
 
 const DefinedInput = ({
   name,
@@ -30,7 +32,11 @@ const DefinedInput = ({
     return <StructInput structType={enumType} onChange={onChange} />
   }
 
-  return <span>Error</span>
+  return (
+    <div className="border rounded-[8px] background-[#e0e0e0] p-[8px]">
+      <Typography className="text-red-600">Error</Typography>
+    </div>
+  )
 }
 
 export default DefinedInput

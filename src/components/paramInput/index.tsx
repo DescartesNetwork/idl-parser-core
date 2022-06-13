@@ -13,6 +13,7 @@ import Select from '../select'
 import { useParser } from '../../providers/parser.provider'
 import { AddressCategory } from '../../constants'
 import { IdlParser } from '../../helpers'
+import IonIcon from '@sentre/antd-ionicon'
 
 const NORMAL_TYPES = [
   'u8',
@@ -28,11 +29,13 @@ const NORMAL_TYPES = [
   'u128',
   'i128',
 ]
+
 type WrapInputProps = {
   idlType: any
   inputName: string
   onChange: (value: string) => void
 }
+
 const WrapInput = ({ inputName, idlType, onChange }: WrapInputProps) => {
   const { parser } = useParser()
   if (!parser.idl?.accounts) return null
@@ -65,6 +68,8 @@ type ParamInputProps = {
   idlType: IdlType
   onChange: (val: string) => void
   placeholder?: string
+  onRemove?: () => void
+  acceptRemove?: boolean
 }
 
 const ParamInput = ({
@@ -73,6 +78,8 @@ const ParamInput = ({
   idlType,
   onChange,
   placeholder = 'Input or select your types',
+  onRemove = () => {},
+  acceptRemove = false,
 }: ParamInputProps) => {
   const [visible, setVisible] = useState(false)
   const [systemSelected, setSystemSelected] = useState(AddressCategory.system)
@@ -90,6 +97,8 @@ const ParamInput = ({
         <PublicKeyInput
           name={name}
           onChange={(acc) => onChange(acc.publicKey)}
+          onRemove={onRemove}
+          acceptRemove
           value={value}
         />
       ) : (
@@ -100,19 +109,28 @@ const ParamInput = ({
               ({IdlParser.getTypeOfParam(idlType)})
             </Typography>
           </div>
-          <Input
-            className="flex-auto"
-            value={value}
-            onValue={onChange}
-            bordered={false}
-            suffix={
-              isExistIdlType && (
-                <Button type="text" onClick={() => setVisible(true)}>
-                  <Typography level={5}>Init</Typography>
-                </Button>
-              )
-            }
-          />
+          <div className="flex flex-row gap-4">
+            <Input
+              className="flex-auto"
+              value={value}
+              onValue={onChange}
+              bordered={false}
+              suffix={
+                isExistIdlType && (
+                  <Button type="text" onClick={() => setVisible(true)}>
+                    <Typography level={5}>Init</Typography>
+                  </Button>
+                )
+              }
+            />
+            {acceptRemove && (
+              <Button
+                type="text"
+                onClick={onRemove}
+                suffix={<IonIcon name="trash-outline" />}
+              />
+            )}
+          </div>
         </div>
       )}
       {/* Advanced input */}
