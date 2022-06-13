@@ -27,10 +27,13 @@ const UploadIdl = () => {
         <div className="flex-auto">
           <UploadFIle />
         </div>
-        <Button
-          onClick={() => setVisible(true)}
-          preffix={<IonIcon name="print-outline" />}
-        />
+
+        {!!idl && (
+          <Button
+            onClick={() => setVisible(true)}
+            preffix={<IonIcon name="print-outline" className="leading-[0]" />}
+          />
+        )}
       </div>
       <Modal
         className="md:!w-[95%] lg:!w-[900px]"

@@ -21,13 +21,14 @@ const StructInput = ({
 
   return (
     <div className="flex flex-col gap-6">
-      {structType.fields?.map(({ name, type }) => {
+      {structType.fields?.map(({ name, type }, idx) => {
         return (
           <ParamInput
             name={name}
             idlType={type}
             value={structData[name] || ''}
             onChange={(data) => onChangeStruct(name, data)}
+            key={idx}
           />
         )
       })}

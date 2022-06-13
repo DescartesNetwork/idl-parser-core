@@ -20,12 +20,15 @@ const ViewTxInstructions = () => {
           <div className="flex flex-col gap-4" key={idx}>
             <Expand
               header={
-                <Typography level={5} className="capitalize">
+                <Typography
+                  level={5}
+                  className="capitalize !font-bold !text-white"
+                >
                   {key}
                 </Typography>
               }
             >
-              <div className="p-4 bg-[#1A1311] text-white">
+              <div className="p-4 bg-[#181C36] text-white">
                 <pre className="flex flex-col">
                   {JSON.stringify(data, null, 2)}
                 </pre>
