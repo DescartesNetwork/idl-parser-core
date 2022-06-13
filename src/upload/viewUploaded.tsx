@@ -25,7 +25,7 @@ const ViewUploaded = () => {
         </div>
         <Typography className="flex-auto">{idl?.name}</Typography>
         <div className="w-[24px] cursor-pointer" onClick={remove}>
-          <IonIcon name="close-outline" />
+          <IonIcon name="trash-outline" />
         </div>
       </div>
       {isEmptyProgramAddr && (

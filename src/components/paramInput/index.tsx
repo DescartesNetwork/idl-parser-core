@@ -112,6 +112,7 @@ const ParamInput = ({
           <div className="flex flex-row gap-4">
             <Input
               className="flex-auto"
+              placeholder={placeholder}
               value={value}
               onValue={onChange}
               bordered={false}

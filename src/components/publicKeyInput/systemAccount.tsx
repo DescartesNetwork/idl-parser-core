@@ -13,6 +13,11 @@ const SYSTEM_ACCOUNTS = [
 const SystemAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   const { walletAddress } = useParser()
 
+  const onNewKeypair = () => {
+    const newKeypair = web3.Keypair.generate()
+    onChange(newKeypair.publicKey.toBase58())
+  }
+
   return (
     <div className="grid grid-cols-2 gap-4">
       {SYSTEM_ACCOUNTS.map((account, idx) => (
@@ -29,6 +34,11 @@ const SystemAccount = ({ onChange }: { onChange: (val: string) => void }) => {
           disabled={!walletAddress}
         >
           Wallet Address
+        </Button>
+      </div>
+      <div>
+        <Button onClick={onNewKeypair} block>
+          New Keypair
         </Button>
       </div>
     </div>
