@@ -20,6 +20,12 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
     setSeeds(newSeed)
   }
 
+  const onRemove = (index: number) => {
+    const newSeed = [...seeds]
+    newSeed.splice(index, 1)
+    setSeeds(newSeed)
+  }
+
   const onChangeInput = async (idx: number, val: string) => {
     if (!account.isAddress(programAddress)) return
     const newSeed = [...seeds]
@@ -45,25 +51,37 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
   }, [deriveNewPDAAddress])
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-8">
       <Button type="dashed" onClick={() => onAdd()}>
         Add
       </Button>
 
-      {seeds.map((val, idx) => {
-        return (
-          <PubicKeyInput
-            value={val}
-            name={'seed ' + (idx + 1)}
-            onChange={(val) => onChangeInput(idx, val.publicKey)}
-          />
-        )
-      })}
+      <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 gap-4">
+          {seeds.map((val, idx) => {
+            return (
+              <PubicKeyInput
+                value={val}
+                name={'Seed ' + (idx + 1)}
+                onChange={(val) => onChangeInput(idx, val.publicKey)}
+                onRemove={() => onRemove(idx)}
+                key={idx}
+              />
+            )
+          })}
+        </div>
 
-      {pdaAddress && <Typography>PDA Address: {pdaAddress}</Typography>}
-      <Button onClick={() => onChange(pdaAddress)} disabled={!pdaAddress} block>
-        Done
-      </Button>
+        {pdaAddress && <Typography>PDA Address: {pdaAddress}</Typography>}
+        {!!seeds.length && (
+          <Button
+            onClick={() => onChange(pdaAddress)}
+            disabled={!pdaAddress}
+            block
+          >
+            Done
+          </Button>
+        )}
+      </div>
     </div>
   )
 }

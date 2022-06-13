@@ -4,13 +4,16 @@ import { IdlType } from '@project-serum/anchor/dist/cjs/idl'
 import ParamInput from './index'
 import Button from '../button'
 
+type ArrayInputProps = {
+  idlType: IdlType
+  onChange: (val: string) => void
+  inputName?: string
+}
 const ArrayInput = ({
   idlType,
   onChange,
-}: {
-  idlType: IdlType
-  onChange: (val: string) => void
-}) => {
+  inputName = 'Seed',
+}: ArrayInputProps) => {
   const [values, setValues] = useState<string[]>([])
 
   const onAdd = () => {
@@ -32,13 +35,16 @@ const ArrayInput = ({
 
   return (
     <div className="flex flex-col gap-6">
-      <Button onClick={() => onAdd()}>Add</Button>
+      <Button type="dashed" onClick={() => onAdd()}>
+        Add
+      </Button>
 
       {values.map((val, idx) => {
+        const name = `${inputName} ${String(idx + 1)}`
         return (
           <ParamInput
             idlType={idlType}
-            name={String(idx)}
+            name={name}
             value={val}
             onChange={(data) => onChangeValues(idx, data)}
             key={idx}

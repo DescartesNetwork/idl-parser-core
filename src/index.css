@@ -512,6 +512,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: flex;
 }
 
+.\!flex {
+  display: flex !important;
+}
+
 .grid {
   display: grid;
 }
@@ -558,6 +562,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .flex-auto {
   flex: 1 1 auto;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .cursor-pointer {
@@ -797,6 +805,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .\!font-bold {
   font-weight: 700 !important;
+}
+
+.font-bold {
+  font-weight: 700;
 }
 
 .capitalize {

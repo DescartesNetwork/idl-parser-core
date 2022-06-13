@@ -117,13 +117,27 @@ const ParamInput = ({
       )}
       {/* Advanced input */}
       {isExistIdlType && (
-        <Modal visible={visible} onClose={() => setVisible(false)}>
-          <span>{name}</span>
-          <WrapInput
-            idlType={idlType}
-            onChange={onChangeWrapInput}
-            inputName={name}
-          />
+        <Modal
+          visible={visible}
+          onClose={() => setVisible(false)}
+          destroyOnClose
+        >
+          <div className="grid grid-cols-1 gap-8">
+            <Typography
+              className="!flex flex-1"
+              style={{
+                textTransform: 'capitalize',
+                fontWeight: 600,
+              }}
+            >
+              {name}
+            </Typography>
+            <WrapInput
+              idlType={idlType}
+              onChange={onChangeWrapInput}
+              inputName={name}
+            />
+          </div>
         </Modal>
       )}
     </div>

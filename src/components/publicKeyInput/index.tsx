@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import IonIcon from '@sentre/antd-ionicon'
 
 import SystemAccount from './systemAccount'
 import ContextAccount from './contextAccount'
@@ -14,20 +15,6 @@ import Select from '../select'
 import { AccountsMeta } from '../../providers/parser.provider'
 import { AddressCategory } from '../../constants'
 
-type PubicKeyInputProps = {
-  name: string
-  value: string
-  onChange: (value: AccountsMeta) => void
-  size?: number
-  placeholder?: string
-  bordered?: boolean
-  defaultCategory?: AddressCategory
-}
-type ModalViewProps = {
-  selected: string
-  onChange: (val: string) => void
-}
-
 export const SELECT_SYSTEM = [
   AddressCategory.context,
   AddressCategory.idl,
@@ -35,6 +22,11 @@ export const SELECT_SYSTEM = [
   AddressCategory.system,
   AddressCategory.token,
 ]
+
+type ModalViewProps = {
+  selected: string
+  onChange: (val: string) => void
+}
 
 const ModalView = ({ selected, onChange }: ModalViewProps) => {
   switch (true) {
@@ -51,12 +43,24 @@ const ModalView = ({ selected, onChange }: ModalViewProps) => {
   }
 }
 
+type PubicKeyInputProps = {
+  name: string
+  value: string
+  onChange: (value: AccountsMeta) => void
+  size?: number
+  placeholder?: string
+  bordered?: boolean
+  defaultCategory?: AddressCategory
+  onRemove?: () => void
+}
+
 const PublicKeyInput = ({
   name,
   value,
   onChange,
   placeholder = 'Input or select your types',
   defaultCategory = AddressCategory.system,
+  onRemove = () => {},
 }: PubicKeyInputProps) => {
   const [visible, setVisible] = useState(false)
   const [category, setCategory] = useState<AddressCategory>(defaultCategory)
@@ -98,11 +102,22 @@ const PublicKeyInput = ({
             </option>
           ))}
         </Select>
+        <Button
+          type="text"
+          onClick={onRemove}
+          suffix={<IonIcon name="trash-outline" />}
+        />
       </div>
       {/* Advanced input */}
-      <Modal visible={visible} onClose={() => setVisible(false)}>
-        <div className="flex flex-col gap-6">
-          <Typography level={5}>{name}</Typography>
+      <Modal
+        visible={visible}
+        onClose={() => setVisible(false)}
+        closeIcon={<IonIcon name="close-outline" />}
+      >
+        <div className="flex flex-col gap-10">
+          <Typography level={5} className="capitalize font-bold">
+            {name}
+          </Typography>
           <ModalView selected={category} onChange={onChangePublicKey} />
         </div>
       </Modal>
