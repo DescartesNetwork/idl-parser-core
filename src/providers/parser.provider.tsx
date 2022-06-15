@@ -94,7 +94,10 @@ const IDLParserContextProvider = ({
     },
     [parserData],
   )
-  const removeIdl = useCallback(() => setParserData(DEFAULT_IDL), [])
+  const removeIdl = useCallback(() => {
+    setParserData(DEFAULT_IDL)
+    setTxInstruct({})
+  }, [])
 
   const setInstruction = useCallback(
     (instruction: string | undefined) => {
