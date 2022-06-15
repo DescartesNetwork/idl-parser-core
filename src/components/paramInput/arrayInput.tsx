@@ -58,7 +58,11 @@ const ArrayInput = ({
           />
         )
       })}
-      {!!values.length && <Button onClick={() => onOk()}>Done</Button>}
+      {!!values.length && (
+        <Button type="primary" onClick={() => onOk()}>
+          Done
+        </Button>
+      )}
     </div>
   )
 }
