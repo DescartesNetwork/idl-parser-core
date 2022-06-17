@@ -17,6 +17,7 @@ import { web3 } from '@project-serum/anchor'
 import { IdlParser } from '../helpers'
 
 const Context = createContext<ParserProvider>({} as ParserProvider)
+
 export type SystemSelected = 'context' | 'system' | 'idl' | 'token' | 'pda'
 
 export type TransactionInstruction = web3.TransactionInstruction
@@ -25,6 +26,11 @@ export type SetExportTxInstruction = {
   data: TransactionInstruction
 }
 
+export type RemainingAccounts = {
+  isSigner: boolean
+  isWritable: boolean
+  pubkey: string
+}
 export type AccountsMeta = {
   publicKey: string
   privateKey?: string
@@ -39,6 +45,7 @@ export type IDLParserState = {
   idl?: Idl
   argsMeta: ArgsMetaState
   accountsMeta: AccountMetaState
+  remainingAccounts: Record<string, RemainingAccounts[]>
 }
 export type SetArgsMetaState = {
   instructName: string
@@ -46,6 +53,7 @@ export type SetArgsMetaState = {
   val: string
 }
 export type SetAccountsMetaState = { name: string; data: AccountsMeta }
+export type SetRemainingAccounts = { name: string; data: RemainingAccounts[] }
 export type ParserProvider = {
   parser: IDLParserState
   setInstruction: (instruc: string) => void
@@ -57,15 +65,17 @@ export type ParserProvider = {
   connection: string
   walletAddress?: string
   txInstructions?: Record<string, TransactionInstruction>
+  setRemainingAccouts: (args: SetRemainingAccounts) => void
 }
 
-const DEFAULT_IDL = {
+const DEFAULT_PARSER_IDL = {
   programAddress: '',
   instructionSelected: '',
   instructionIdl: undefined,
   idl: undefined,
   argsMeta: {},
   accountsMeta: {},
+  remainingAccounts: {},
 }
 
 type IDLContextProviderProps = {
@@ -80,7 +90,7 @@ const IDLParserContextProvider = ({
   walletAddress,
 }: IDLContextProviderProps) => {
   const [parserData, setParserData] = useState<IDLParserState>(
-    DEFAULT_IDL as IDLParserState,
+    DEFAULT_PARSER_IDL as IDLParserState,
   )
   const [txInstruct, setTxInstruct] = useState({})
 
@@ -95,7 +105,7 @@ const IDLParserContextProvider = ({
     [parserData],
   )
   const removeIdl = useCallback(() => {
-    setParserData(DEFAULT_IDL)
+    setParserData(DEFAULT_PARSER_IDL)
     setTxInstruct({})
   }, [])
 
@@ -125,7 +135,6 @@ const IDLParserContextProvider = ({
           [instructName]: { ...argsData[instructName], [name]: val },
         }
       }
-
       return setParserData({ ...nextData })
     },
     [parserData],
@@ -143,6 +152,17 @@ const IDLParserContextProvider = ({
     [parserData],
   )
 
+  const setRemainingAccouts = useCallback(
+    (args: SetRemainingAccounts | undefined) => {
+      const nextData: IDLParserState = JSON.parse(JSON.stringify(parserData))
+      if (!!args) {
+        const { name, data } = args
+        nextData.remainingAccounts[name] = data
+      }
+      return setParserData({ ...nextData })
+    },
+    [parserData],
+  )
   const setTxInstructions = useCallback(
     (args?: SetExportTxInstruction) => {
       let nextData: Record<string, TransactionInstruction> = JSON.parse(
@@ -166,6 +186,7 @@ const IDLParserContextProvider = ({
       setAccountsMeta,
       removeIdl,
       setTxInstructions,
+      setRemainingAccouts,
       txInstructions: txInstruct,
       connection,
       walletAddress,
@@ -178,6 +199,7 @@ const IDLParserContextProvider = ({
       setAccountsMeta,
       removeIdl,
       setTxInstructions,
+      setRemainingAccouts,
       txInstruct,
       connection,
       walletAddress,

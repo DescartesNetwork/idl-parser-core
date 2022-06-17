@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import { Empty, ParamInput, PublicKeyInput, Segmented } from '../components'
+import RemainingInput from '../components/remainingInput'
+import Typography from '../components/typography'
 
 import { AddressCategory } from '../constants'
 import { useParser } from '../providers/parser.provider'
@@ -38,18 +40,27 @@ export const InstructorAccounts = () => {
 
   if (!instructionIdl?.accounts.length) return <Empty />
   return (
-    <div className="flex flex-col gap-4">
-      {instructionIdl.accounts.map((account, idx) => (
-        <PublicKeyInput
-          onChange={(accData) =>
-            setAccountsMeta({ name: account.name, data: accData })
-          }
-          name={account.name}
-          value={accountsMeta[account.name]?.publicKey}
-          key={idx}
-          defaultCategory={findDefaultCategory(account.name)}
-        />
-      ))}
+    <div className="grid grid-cols-1 gap-6">
+      <div className="flex flex-col gap-4">
+        <Typography className="font-bold text-[18px]">Accounts</Typography>
+        {instructionIdl.accounts.map((account, idx) => (
+          <PublicKeyInput
+            onChange={(accData) =>
+              setAccountsMeta({ name: account.name, data: accData })
+            }
+            name={account.name}
+            value={accountsMeta[account.name]?.publicKey}
+            key={idx}
+            defaultCategory={findDefaultCategory(account.name)}
+          />
+        ))}
+      </div>
+      <div className="flex flex-col gap-4">
+        <Typography className="font-bold text-[18px]" level={4}>
+          Remaining Accounts
+        </Typography>
+        <RemainingInput />
+      </div>
     </div>
   )
 }
@@ -66,7 +77,11 @@ export const InstructorArguments = () => {
         <ParamInput
           idlType={type}
           onChange={(val) =>
-            setArgsMeta({ instructName: instructionSelected || '', name, val })
+            setArgsMeta({
+              instructName: instructionSelected || '',
+              name,
+              val,
+            })
           }
           name={name}
           value={argsMeta?.[instructionSelected || '']?.[name]}

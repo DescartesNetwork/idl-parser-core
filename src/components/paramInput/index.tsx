@@ -29,13 +29,11 @@ const NORMAL_TYPES = [
   'u128',
   'i128',
 ]
-
 type WrapInputProps = {
   idlType: any
   inputName: string
   onChange: (value: string) => void
 }
-
 const WrapInput = ({ inputName, idlType, onChange }: WrapInputProps) => {
   const { parser } = useParser()
   if (!parser.idl?.accounts) return null
@@ -60,16 +58,6 @@ const WrapInput = ({ inputName, idlType, onChange }: WrapInputProps) => {
   }
 
   return <DefinedInput name={idlType} onChange={onChange} />
-}
-
-type ParamInputProps = {
-  name: string
-  value: string
-  idlType: IdlType
-  onChange: (val: string) => void
-  placeholder?: string
-  onRemove?: () => void
-  acceptRemove?: boolean
 }
 
 type ArgsInputProps = {
@@ -119,7 +107,7 @@ const ArgsInput = ({
       <Input
         className="flex-auto"
         value={value}
-        onValue={onChange}
+        onChange={(e) => onChange(e.target.value)}
         bordered={false}
         placeholder={placeholder}
         suffix={
@@ -141,6 +129,15 @@ const ArgsInput = ({
   )
 }
 
+type ParamInputProps = {
+  name: string
+  value: string
+  idlType: IdlType
+  onChange: (val: string) => void
+  placeholder?: string
+  onRemove?: () => void
+  acceptRemove?: boolean
+}
 const ParamInput = ({
   name,
   value,
@@ -151,14 +148,13 @@ const ParamInput = ({
   acceptRemove = false,
 }: ParamInputProps) => {
   const [visible, setVisible] = useState(false)
-  const [systemSelected, setSystemSelected] = useState(AddressCategory.system)
 
   const onChangeWrapInput = (val: string) => {
     onChange(val)
     setVisible(false)
   }
 
-  const isExistIdlType = !NORMAL_TYPES.includes(idlType.toString())
+  const isExist = !NORMAL_TYPES.includes(idlType.toString())
 
   return (
     <div>
@@ -176,6 +172,7 @@ const ParamInput = ({
               ({IdlParser.getTypeOfParam(idlType)})
             </Typography>
           </div>
+
           <ArgsInput
             value={value}
             onChange={onChange}
@@ -183,18 +180,18 @@ const ParamInput = ({
             onClick={() => setVisible(true)}
             onRemove={onRemove}
             acceptRemove={acceptRemove}
-            isExist={isExistIdlType}
+            isExist={isExist}
             idlType={idlType}
             inputName={name}
           />
         </div>
       )}
       {/* Advanced input */}
-      {isExistIdlType && (
+      {!NORMAL_TYPES.includes(idlType.toString()) && (
         <Modal
           visible={visible}
           onClose={() => setVisible(false)}
-          destroyOnClose
+          closeIcon={<IonIcon name="close-outline" />}
         >
           <div className="grid grid-cols-1 gap-8">
             <Typography

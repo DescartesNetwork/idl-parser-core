@@ -23,12 +23,12 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   const { idl, programAddress } = parser || {}
 
   const getProgram = useCallback(() => {
-    if (!idl || !programAddress) return
+    if (!idl || !programAddress || !connection) return
     const connect = new Connection(connection)
     const provider = getAnchorProvider(connect)
     const program = new Program(idl, programAddress, provider)
     return program
-  }, [idl, programAddress])
+  }, [connection, idl, programAddress])
 
   const onFetchAccountData = useCallback(async () => {
     try {
@@ -63,6 +63,7 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
       setAccountsViewer(newIdlAccountData)
     } catch (error) {
       setAccountsViewer({})
+      console.log(error)
     } finally {
       setLoading(false)
     }
@@ -84,16 +85,12 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
         <div className="flex flex-row gap-4">
           <Input
             value={address}
-            onValue={setAddress}
+            onChange={(e) => setAddress(e.target.value)}
+            bordered={false}
             preffix={loading ? <Spinner /> : <IonIcon name="search-outline" />}
             className="flex-auto stroke-slate-500"
-            bordered={false}
           />
-          <Select
-            value={accountType}
-            style={{ minWidth: 120, minHeight: 32 }}
-            onValue={() => {}}
-          >
+          <Select value={accountType} style={{ minWidth: 120, minHeight: 32 }}>
             {idl?.accounts?.map((acc, idx) => {
               return (
                 <option value={acc.name} key={idx}>
@@ -118,7 +115,6 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
                       <Input
                         className="flex-auto"
                         value={val}
-                        onValue={() => {}}
                         bordered={false}
                       />
                       <Button
