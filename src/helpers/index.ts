@@ -1,12 +1,8 @@
-import { Idl, AnchorProvider, web3, BN } from '@project-serum/anchor'
+import { Idl, web3, BN } from '@project-serum/anchor'
 import { IdlInstruction } from '@project-serum/anchor/dist/cjs/idl'
-import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet'
-import { Connection, PublicKey } from '@solana/web3.js'
-import {
-  AccountsMeta,
-  ArgsMeta,
-  ArgsMetaState,
-} from '../providers/parser.provider'
+import { PublicKey } from '@solana/web3.js'
+
+import { AccountsMeta, ArgsMeta } from '../providers/parser.provider'
 
 export const fileToBase64 = (
   file: File,
@@ -37,15 +33,6 @@ export class IdlParser {
     }
     return '-'
   }
-}
-
-export const getAnchorProvider = (connection: Connection) => {
-  const keyPair = web3.Keypair.generate()
-  const wallet = new NodeWallet(keyPair)
-  return new AnchorProvider(connection, wallet, {
-    commitment: 'confirmed',
-    skipPreflight: true,
-  })
 }
 
 export const convertStringDataToPubKey = (
@@ -117,9 +104,7 @@ export const normalizeAnchorArgs = (
         const separatedValues = value.split(',')
         return separatedValues
       case 'String':
-        const pubKey = value
-          .split(',')
-          .map((value) => new web3.PublicKey(value))
+        const pubKey = value.split(',').map((value) => new PublicKey(value))
         return pubKey
       case 'MintActionState []':
         const actions = value.split(',').map((value) => value)

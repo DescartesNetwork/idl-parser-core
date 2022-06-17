@@ -10,7 +10,7 @@ import Empty from '../empty'
 import Typography from '../typography'
 
 import { useParser } from '../../providers/parser.provider'
-import { getAnchorProvider } from '../../helpers'
+import { useProgram } from '../../hooks/useProgram'
 
 const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   const [address, setAddress] = useState('')
@@ -19,21 +19,13 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
   const [accountsViewer, setAccountsViewer] = useState<
     Record<string, string[]>
   >({})
-  const { parser, connection } = useParser()
-  const { idl, programAddress } = parser || {}
-
-  const getProgram = useCallback(() => {
-    if (!idl || !programAddress || !connection) return
-    const connect = new Connection(connection)
-    const provider = getAnchorProvider(connect)
-    const program = new Program(idl, programAddress, provider)
-    return program
-  }, [connection, idl, programAddress])
+  const { parser } = useParser()
+  const { idl } = parser || {}
+  const program = useProgram()
 
   const onFetchAccountData = useCallback(async () => {
     try {
       setLoading(true)
-      const program = getProgram()
       if (!program || !accountType || !address) return
       const accountPublicKey = new web3.PublicKey(address)
 
@@ -67,7 +59,7 @@ const IdlAccount = ({ onChange }: { onChange: (val: string) => void }) => {
     } finally {
       setLoading(false)
     }
-  }, [accountType, address, getProgram])
+  }, [accountType, address, program])
 
   useEffect(() => {
     onFetchAccountData()
