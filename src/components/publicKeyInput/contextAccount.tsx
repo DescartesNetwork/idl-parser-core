@@ -7,7 +7,7 @@ import { useParser } from '../../providers/parser.provider'
 
 const ContextAccount = ({ onClick }: { onClick: (val: string) => void }) => {
   const { parser } = useParser()
-  const { accountsMeta } = parser || {}
+  const { accountsMetas: accountsMeta } = parser || {}
 
   return (
     <div>

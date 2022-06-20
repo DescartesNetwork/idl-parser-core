@@ -6,71 +6,33 @@ import Button from '../components/button'
 import ViewTxInstructions from './viewTxInstructions'
 
 import { useParser } from '../providers/parser.provider'
+import { convertStringDataToPubKey } from '../helpers'
 import { useProgram } from '../hooks/useProgram'
-import { convertStringDataToPubKey, normalizeAnchorArgs } from '../helpers'
+import { useArgs } from '../hooks/useArgs'
+import { useRemainingAccounts } from '../hooks/useRemainingAccounts'
 
 const GenerateInstruction = () => {
   const [loading, setLoading] = useState(false)
   const { parser, setTxInstructions } = useParser()
-  const {
-    accountsMeta,
-    argsMeta,
-    instructionSelected,
-    instructionIdl,
-    remainingAccounts,
-  } = parser || {}
+  const { accountsMetas: accountsMeta, ixSelected } = parser
   const program = useProgram()
-
-  const initInstructionNonArgs = useCallback(
-    async (data: Record<string, PublicKey>) => {
-      if (!program || !instructionSelected) return
-      return await program.methods[instructionSelected]().accounts(data)
-    },
-    [instructionSelected, program],
-  )
-
-  const initInstruction = useCallback(
-    async (data: Record<string, PublicKey>) => {
-      if (!program || !instructionSelected || !instructionIdl) return
-      const args = argsMeta[instructionSelected]
-      const nomalizedArgsMeta = normalizeAnchorArgs(args, instructionIdl)
-      return await program.methods[instructionSelected](
-        ...nomalizedArgsMeta,
-      ).accounts(data)
-    },
-    [argsMeta, instructionIdl, instructionSelected, program],
-  )
+  const args = useArgs(ixSelected)
+  const remainingAccounts = useRemainingAccounts(ixSelected)
 
   const onInit = async () => {
     try {
-      if (!instructionSelected) return
-
       setLoading(true)
-
       const accountsMetaPubkey = convertStringDataToPubKey(accountsMeta)
-      let nextRemainingAccounts = []
-
-      for (const remainingAccout of remainingAccounts[instructionSelected] ||
-        []) {
-        const nextRemainingAccount = {
-          ...remainingAccout,
-          pubkey: new PublicKey(remainingAccout.pubkey),
-        }
-        nextRemainingAccounts.push(nextRemainingAccount)
-      }
-
-      let instruction = undefined
-      if (!!instructionIdl?.args.length)
-        instruction = await initInstruction(accountsMetaPubkey)
-      else instruction = await initInstructionNonArgs(accountsMetaPubkey)
-
-      const data = await instruction
-        ?.remainingAccounts(nextRemainingAccounts)
+      const instruction = await program.methods[ixSelected]
+        .call(this, ...args)
+        .accounts(accountsMetaPubkey)
+        .remainingAccounts(remainingAccounts)
         .instruction()
-      if (!data) return setTxInstructions()
-      return setTxInstructions({ name: instructionSelected || '', data })
+
+      return setTxInstructions({ name: ixSelected, data: instruction })
     } catch (err) {
       console.log(err, 'err')
+      return setTxInstructions()
     } finally {
       setLoading(false)
     }

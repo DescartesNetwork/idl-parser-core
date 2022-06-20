@@ -10,9 +10,7 @@ import {
   useCallback,
   useMemo,
 } from 'react'
-import { Idl } from '@project-serum/anchor'
-import { IdlInstruction } from '@project-serum/anchor/dist/cjs/idl'
-import { web3 } from '@project-serum/anchor'
+import { Idl, web3 } from '@project-serum/anchor'
 
 import { IdlParser } from '../helpers'
 
@@ -26,10 +24,10 @@ export type SetExportTxInstruction = {
   data: TransactionInstruction
 }
 
-export type RemainingAccounts = {
+export type AccountMetaAddress = {
   isSigner: boolean
   isWritable: boolean
-  pubkey: string
+  address: string
 }
 export type AccountsMeta = {
   publicKey: string
@@ -38,14 +36,15 @@ export type AccountsMeta = {
 export type ArgsMeta = Record<string, string>
 export type AccountMetaState = Record<string, AccountsMeta>
 export type ArgsMetaState = Record<string, ArgsMeta>
+
 export type IDLParserState = {
   programAddress?: string
-  instructionSelected?: string
-  instructionIdl?: IdlInstruction
+  ixSelected: string
   idl?: Idl
-  argsMeta: ArgsMetaState
-  accountsMeta: AccountMetaState
-  remainingAccounts: Record<string, RemainingAccounts[]>
+  // instructionIdl?: IdlInstruction
+  argsMetas: ArgsMetaState
+  accountsMetas: AccountMetaState
+  remainingAccounts: Record<string, AccountMetaAddress[]>
 }
 export type SetArgsMetaState = {
   instructName: string
@@ -53,7 +52,7 @@ export type SetArgsMetaState = {
   val: string
 }
 export type SetAccountsMetaState = { name: string; data: AccountsMeta }
-export type SetRemainingAccounts = { name: string; data: RemainingAccounts[] }
+export type SetRemainingAccounts = { name: string; data: AccountMetaAddress[] }
 export type ParserProvider = {
   parser: IDLParserState
   setInstruction: (instruc: string) => void
@@ -68,13 +67,12 @@ export type ParserProvider = {
   setRemainingAccouts: (args: SetRemainingAccounts) => void
 }
 
-const DEFAULT_PARSER_IDL = {
+const DEFAULT_PARSER_IDL: IDLParserState = {
   programAddress: '',
-  instructionSelected: '',
-  instructionIdl: undefined,
+  ixSelected: '',
   idl: undefined,
-  argsMeta: {},
-  accountsMeta: {},
+  argsMetas: {},
+  accountsMetas: {},
   remainingAccounts: {},
 }
 
@@ -109,17 +107,16 @@ const IDLParserContextProvider = ({
     setTxInstruct({})
   }, [])
 
-  const setInstruction = useCallback(
-    (instruction: string | undefined) => {
+  const selectInstruction = useCallback(
+    (ixName: string) => {
       const nextData: IDLParserState = JSON.parse(JSON.stringify(parserData))
-      if (nextData.instructionSelected === instruction) return
-
-      const instructionIdl = parserData.idl?.instructions?.find(
-        (elm) => elm.name === instruction,
-      )
-      nextData.instructionIdl = instructionIdl
-      nextData.instructionSelected = instruction
-      return setParserData({ ...nextData })
+      if (nextData.ixSelected === ixName) return
+      nextData.ixSelected = ixName
+      // Default instruction data
+      nextData.argsMetas[ixName] = {}
+      nextData.remainingAccounts[ixName] = []
+      nextData.accountsMetas = {}
+      return setParserData(nextData)
     },
     [parserData],
   )
@@ -129,8 +126,8 @@ const IDLParserContextProvider = ({
       let nextData: IDLParserState = JSON.parse(JSON.stringify(parserData))
       if (!!args && !!args.instructName) {
         const { instructName, name, val } = args
-        const argsData = nextData.argsMeta
-        nextData.argsMeta = {
+        const argsData = nextData.argsMetas
+        nextData.argsMetas = {
           ...argsData,
           [instructName]: { ...argsData[instructName], [name]: val },
         }
@@ -145,7 +142,7 @@ const IDLParserContextProvider = ({
       const nextData: IDLParserState = JSON.parse(JSON.stringify(parserData))
       if (!!args) {
         const { name, data } = args
-        nextData.accountsMeta = { ...nextData.accountsMeta, [name]: data }
+        nextData.accountsMetas = { ...nextData.accountsMetas, [name]: data }
       }
       return setParserData({ ...nextData })
     },
@@ -180,7 +177,7 @@ const IDLParserContextProvider = ({
   const provider = useMemo(
     () => ({
       parser: parserData,
-      setInstruction,
+      setInstruction: selectInstruction,
       uploadIdl,
       setArgsMeta,
       setAccountsMeta,
@@ -193,7 +190,7 @@ const IDLParserContextProvider = ({
     }),
     [
       parserData,
-      setInstruction,
+      selectInstruction,
       uploadIdl,
       setArgsMeta,
       setAccountsMeta,
