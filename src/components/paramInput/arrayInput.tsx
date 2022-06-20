@@ -9,6 +9,7 @@ type ArrayInputProps = {
   onChange: (val: string) => void
   inputName?: string
 }
+
 const ArrayInput = ({
   idlType,
   onChange,
@@ -44,6 +45,7 @@ const ArrayInput = ({
       <Button type="dashed" onClick={() => onAdd()}>
         Add
       </Button>
+
       {values.map((val, idx) => {
         const name = `${inputName} ${String(idx + 1)}`
         return (
