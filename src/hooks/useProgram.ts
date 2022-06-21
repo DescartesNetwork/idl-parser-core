@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Idl, Program } from '@project-serum/anchor'
 
 import { useParser } from '../providers/parser.provider'
@@ -20,5 +21,8 @@ export const useProgram = () => {
     ? programAddress
     : DEFAULT_IDL_PROGRAM_ADDRESS
 
-  return new Program(idl, paramProgramAddr, provider)
+  return useMemo(
+    () => new Program(idl, paramProgramAddr, provider),
+    [idl, paramProgramAddr, provider],
+  )
 }

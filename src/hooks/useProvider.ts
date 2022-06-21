@@ -12,8 +12,12 @@ export const useProvider = () => {
     return new NodeWallet(keyPair)
   }, [])
 
-  return new AnchorProvider(new web3.Connection(connection), wallet, {
-    commitment: 'confirmed',
-    skipPreflight: true,
-  })
+  return useMemo(
+    () =>
+      new AnchorProvider(new web3.Connection(connection), wallet, {
+        commitment: 'confirmed',
+        skipPreflight: true,
+      }),
+    [connection, wallet],
+  )
 }
