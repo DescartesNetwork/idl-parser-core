@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Program, web3 } from '@project-serum/anchor'
-import { Connection } from '@solana/web3.js'
+import { web3 } from '@project-serum/anchor'
 import IonIcon from '@sentre/antd-ionicon'
 
 import Button, { Spinner } from '../button'

@@ -1,6 +1,4 @@
-import { useCallback, useState } from 'react'
-import { Program } from '@project-serum/anchor'
-import { PublicKey, Connection } from '@solana/web3.js'
+import { useState } from 'react'
 
 import Button from '../components/button'
 import ViewTxInstructions from './viewTxInstructions'

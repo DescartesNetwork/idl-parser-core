@@ -10,10 +10,11 @@ export const useArgs = (ixName: string): ArgsType => {
   const { argsMetas } = useParser().parser
   const [args, setArgs] = useState<ArgsType>([])
   const idlInstruction = useIdlInstruction(ixName)
+  const { parser } = useParser()
 
   const parserArgs = useCallback(() => {
     const args = argsMetas[ixName] || []
-    const parsedArgs = normalizeAnchorArgs(args, idlInstruction)
+    const parsedArgs = normalizeAnchorArgs(args, idlInstruction, parser)
     setArgs(parsedArgs)
   }, [argsMetas, idlInstruction, ixName])
   useEffect(() => {

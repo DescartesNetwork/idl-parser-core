@@ -1,4 +1,4 @@
-import React, { CSSProperties, InputHTMLAttributes, ReactNode } from 'react'
+import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react'
 
 type InputProps = {
   value?: string
