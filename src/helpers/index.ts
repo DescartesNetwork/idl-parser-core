@@ -93,14 +93,10 @@ export const convertArgsByType = (
     case !!definedType:
       return convertArgsByType(raw, definedType, parser)
     case !!vecType:
-      return convertArgsByType(
-        raw
-          .toString()
-          .split(',')
-          .map((val) => val),
-        vecType,
-        parser,
-      )
+      return raw
+        .toString()
+        .split(',')
+        .map((val) => convertArgsByType(val, vecType, parser))
     case !!arrayType:
       return convertArgsByType(
         raw
@@ -111,15 +107,17 @@ export const convertArgsByType = (
         parser,
       )
     case isPubkeyType:
-      return new PublicKey(raw)
+      try {
+        return new PublicKey(raw)
+      } catch (error) {
+        return raw
+      }
     case isBoolType:
       return Boolean(raw)
     case isNumberType:
       return !!Number(raw) && Number(raw) % 2 === 0 ? new BN(raw) : new BN(0)
-
     case isTypeIdlEnum:
       return { [raw.substring(0, 1).toLowerCase() + raw.substring(1)]: {} }
-
     case isTypeIdlStruct:
       if (typeof raw === 'object') {
         const nextRawData = JSON.parse(JSON.stringify(raw))
@@ -136,7 +134,6 @@ export const convertArgsByType = (
         return nextRawData
       }
       return raw
-
     default:
       return raw
   }
