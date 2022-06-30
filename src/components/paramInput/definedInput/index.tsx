@@ -9,13 +9,13 @@ import StructInput from './structInput'
 
 import { useParser } from '../../../providers/parser.provider'
 
-const DefinedInput = ({
-  name,
-  onChange,
-}: {
+type DefinedInputProps = {
+  value?: string
   name: string
   onChange: (val: string) => void
-}) => {
+}
+
+const DefinedInput = ({ value, name, onChange }: DefinedInputProps) => {
   const { parser } = useParser()
 
   let typeIdlEnum = parser.idl?.types?.find((e) => e.name === name)
@@ -24,7 +24,7 @@ const DefinedInput = ({
 
   if (typeIdlEnum?.type.kind === 'enum') {
     const enumType = typeIdlEnum.type as IdlTypeDefTyEnum
-    return <EnumInput enumType={enumType} onChange={onChange} />
+    return <EnumInput enumType={enumType} value={value} onChange={onChange} />
   }
 
   if (typeIdlEnum?.type.kind === 'struct') {
