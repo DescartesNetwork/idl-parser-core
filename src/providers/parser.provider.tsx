@@ -163,8 +163,7 @@ const IDLParserContextProvider = ({
   )
   const setTxInstructions = useCallback(
     (args?: SetExportTxInstruction) => {
-      let nextData: Record<string, TransactionInstruction> =
-        Object.create(txInstruct)
+      let nextData: Record<string, TransactionInstruction> = { ...txInstruct }
 
       if (!!args) {
         const { name, data } = args
