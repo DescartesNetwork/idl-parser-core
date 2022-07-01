@@ -13,7 +13,7 @@ import Typography from '../typography'
 import Select from '../select'
 
 import { AccountsMeta } from '../../providers/parser.provider'
-import { AddressCategory } from '../../constants'
+import { AddressCategory } from '../../types'
 
 export const SELECT_SYSTEM = [
   AddressCategory.context,

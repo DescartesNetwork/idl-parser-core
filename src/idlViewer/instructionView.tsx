@@ -1,10 +1,9 @@
 import { useCallback, useState } from 'react'
 
-import { Empty, ParamInput, PublicKeyInput, Segmented } from '../components'
+import { PublicKeyInput, ParamInput, Empty, Segmented } from '../components'
 import RemainingInput from '../components/remainingInput'
 import Typography from '../components/typography'
-
-import { AddressCategory } from '../constants'
+import { AddressCategory } from '../types'
 import { useIdlInstruction } from '../hooks/useIdlInstruction'
 import { useParser } from '../providers/parser.provider'
 
