@@ -1,7 +1,8 @@
 import { utils, web3 } from '@project-serum/anchor'
-import { useParser } from '../../providers/parser.provider'
 
-import Button from '../button'
+import Button from 'components/button'
+
+import { KeypairMeta } from 'providers/parser.provider'
 
 const SYSTEM_ACCOUNTS = [
   { name: 'systemProgram', value: web3.SystemProgram.programId },
@@ -10,42 +11,24 @@ const SYSTEM_ACCOUNTS = [
   { name: 'associatedTokenProgram', value: utils.token.ASSOCIATED_PROGRAM_ID },
 ]
 
-const SystemAccount = ({ onChange }: { onChange: (val: string) => void }) => {
-  const { walletAddress } = useParser()
-
-  const onNewKeypair = () => {
-    const newKeypair = web3.Keypair.generate()
-    onChange(newKeypair.publicKey.toBase58())
-  }
-
+const SystemAccount = ({
+  onChange,
+}: {
+  onChange: (val: KeypairMeta) => void
+}) => {
   return (
     <div className="grid grid-cols-2 gap-4">
       {SYSTEM_ACCOUNTS.map((account, idx) => (
         <div key={idx}>
           <Button
             type="primary"
-            onClick={() => onChange(account.value.toBase58())}
+            onClick={() => onChange({ publicKey: account.value.toBase58() })}
             block
           >
             {account.name}
           </Button>
         </div>
       ))}
-      <div>
-        <Button
-          type="primary"
-          onClick={() => onChange(walletAddress || '')}
-          block
-          disabled={!walletAddress}
-        >
-          Wallet Address
-        </Button>
-      </div>
-      <div>
-        <Button type="primary" onClick={onNewKeypair} block>
-          New Keypair
-        </Button>
-      </div>
     </div>
   )
 }

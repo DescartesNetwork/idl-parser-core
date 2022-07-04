@@ -2,12 +2,11 @@ import { useState } from 'react'
 import { IdlType as AnchorIdlType } from '@project-serum/anchor/dist/cjs/idl'
 
 import IonIcon from '@sentre/antd-ionicon'
+import { PublicKeyInput, Modal, Typography } from 'components'
 import InitInput from './initInput'
 import WrapInput from './wrapInput'
-import PublicKeyInput from '../publicKeyInput'
-import Typography from '../typography'
-import Modal from '../modal'
-import { IdlParser } from '../../helpers'
+
+import { IdlParser } from 'helpers'
 
 type ParamInputProps = {
   name: string
@@ -35,7 +34,7 @@ const ParamInput = ({
   if (idlType === 'publicKey')
     return (
       <PublicKeyInput
-        name={name}
+        accountName={name}
         onChange={(acc) => onChange(acc.publicKey)}
         value={value}
       />
@@ -48,7 +47,7 @@ const ParamInput = ({
     <div>
       <div className="grid gird-cols-1 gap-1">
         <div className="flex flex-row gap-2">
-          <Typography className="capitalize text-gray-400">{name}</Typography>
+          <Typography className="capitalize text-gray-600">{name}</Typography>
           <Typography secondary>
             ({IdlParser.getTypeOfParam(idlType)})
           </Typography>

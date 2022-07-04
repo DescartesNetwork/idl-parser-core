@@ -1,42 +1,39 @@
-import { useState } from 'react'
-import IonIcon from '@sentre/antd-ionicon'
+import { useState, useEffect } from 'react'
 
+import IonIcon from '@sentre/antd-ionicon'
 import SystemAccount from './systemAccount'
 import ContextAccount from './contextAccount'
 import IdlAccount from './idlAccount'
 import TokenAccount from './tokenAccount'
 import Pda from './pda'
-import Input from '../input'
-import Button from '../button'
-import Modal from '../modal'
-import Typography from '../typography'
-import Select from '../select'
+import { Modal, Input, Button, Select, Typography } from 'components'
 
-import { AccountsMeta } from '../../providers/parser.provider'
-import { AddressCategory } from '../../types'
+import { KeypairMeta } from 'providers/parser.provider'
+import { useSuggestAccountCategory } from 'hooks/useSuggestAccountCategory'
+import { AddressCategory } from 'types'
 
 export const SELECT_SYSTEM = [
-  AddressCategory.context,
   AddressCategory.idl,
-  AddressCategory.pda,
-  AddressCategory.system,
   AddressCategory.token,
+  AddressCategory.pda,
+  AddressCategory.context,
+  AddressCategory.system,
 ]
 
 type ModalViewProps = {
-  selected: string
-  onChange: (val: string) => void
+  inputType: string
+  onChange: (val: KeypairMeta) => void
 }
 
-const ModalView = ({ selected, onChange }: ModalViewProps) => {
-  switch (true) {
-    case selected === AddressCategory.context:
-      return <ContextAccount onClick={onChange} />
-    case selected === AddressCategory.idl:
+const ModalView = ({ inputType, onChange }: ModalViewProps) => {
+  switch (inputType) {
+    case AddressCategory.context:
+      return <ContextAccount onChange={onChange} />
+    case AddressCategory.idl:
       return <IdlAccount onChange={onChange} />
-    case selected === AddressCategory.system:
+    case AddressCategory.system:
       return <SystemAccount onChange={onChange} />
-    case selected === AddressCategory.token:
+    case AddressCategory.token:
       return <TokenAccount onChange={onChange} />
     default:
       return <Pda onChange={onChange} />
@@ -44,43 +41,55 @@ const ModalView = ({ selected, onChange }: ModalViewProps) => {
 }
 
 type PubicKeyInputProps = {
-  name: string
+  accountName: string
   value: string
-  onChange: (value: AccountsMeta) => void
-  size?: number
   placeholder?: string
-  bordered?: boolean
-  defaultCategory?: AddressCategory
+  onChange: (value: KeypairMeta) => void
   onRemove?: () => void
-  acceptRemove?: boolean
 }
 
 const PublicKeyInput = ({
-  name,
+  accountName,
   value,
+  placeholder = '',
   onChange,
-  placeholder = 'Input or select your types',
-  defaultCategory = AddressCategory.system,
-  onRemove = () => {},
-  acceptRemove = false,
+  onRemove,
 }: PubicKeyInputProps) => {
   const [visible, setVisible] = useState(false)
-  const [category, setCategory] = useState<AddressCategory>(defaultCategory)
+  const [category, setCategory] = useState<AddressCategory>()
+  const { findDefaultCategory } = useSuggestAccountCategory()
 
-  const onChangePublicKey = (address: string) => {
-    onChange({ publicKey: address, privateKey: '' })
+  // Select default category
+  useEffect(() => {
+    if (!category) {
+      const defaultCategory = findDefaultCategory(accountName)
+      setCategory(defaultCategory)
+    }
+  }, [category, findDefaultCategory, accountName])
+
+  const onChangePublicKey = (keypair: KeypairMeta) => {
+    onChange(keypair)
     setVisible(false)
   }
 
+  const onSelectCategory = (category: AddressCategory) => {
+    setCategory(category)
+    setVisible(true)
+  }
+
+  if (!category) return null
+
   return (
-    <div className="flex flex-col">
-      <Typography className="capitalize text-gray-400">{name}</Typography>
+    <div className="flex flex-col gap-[6px]">
+      <Typography className="capitalize text-gray-600">
+        {accountName}
+      </Typography>
       <div className="flex flex-nowrap gap-[16px]">
         <Input
           className="flex-auto"
           value={value}
           placeholder={placeholder}
-          onChange={(e) => onChangePublicKey(e.target.value)}
+          onChange={(e) => onChangePublicKey({ publicKey: e.target.value })}
           bordered={false}
           suffix={
             <Button type="text" onClick={() => setVisible(true)}>
@@ -91,7 +100,7 @@ const PublicKeyInput = ({
         <Select
           style={{ minWidth: 120 }}
           value={category}
-          onChange={(e) => setCategory(e.target.value as AddressCategory)}
+          onChange={(e) => onSelectCategory(e.target.value as AddressCategory)}
         >
           {SELECT_SYSTEM.map((item, idx) => (
             <option
@@ -103,7 +112,7 @@ const PublicKeyInput = ({
             </option>
           ))}
         </Select>
-        {acceptRemove && (
+        {onRemove && (
           <Button
             type="text"
             onClick={onRemove}
@@ -119,9 +128,9 @@ const PublicKeyInput = ({
       >
         <div className="flex flex-col gap-10">
           <Typography level={5} className="capitalize font-bold">
-            {name}
+            {accountName}
           </Typography>
-          <ModalView selected={category} onChange={onChangePublicKey} />
+          <ModalView inputType={category} onChange={onChangePublicKey} />
         </div>
       </Modal>
     </div>

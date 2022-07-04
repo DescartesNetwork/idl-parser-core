@@ -2,13 +2,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
+import { Button, Typography } from 'components'
 import PubicKeyInput from './index'
-import Button from '../button'
-import Typography from '../typography'
 
-import { useParser } from '../../providers/parser.provider'
+import { KeypairMeta, useParser } from 'providers/parser.provider'
 
-const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
+const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
   const [seeds, setSeeds] = useState<string[]>([])
   const [pdaAddress, setPdaAddress] = useState('')
   const { programAddress } = useParser()
@@ -18,7 +17,6 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
     newSeed.push('')
     setSeeds(newSeed)
   }
-
   const onRemove = (index: number) => {
     const newSeed = [...seeds]
     newSeed.splice(index, 1)
@@ -33,7 +31,6 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
 
   const deriveNewPDAAddress = useCallback(async () => {
     if (!seeds.length || !programAddress) return setPdaAddress('')
-
     const [pdaAddress] = await web3.PublicKey.findProgramAddress(
       seeds.map((val) => {
         if (account.isAddress(val)) return new web3.PublicKey(val).toBuffer()
@@ -60,10 +57,9 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
             return (
               <PubicKeyInput
                 value={val}
-                name={'Seed ' + (idx + 1)}
+                accountName={'Seed ' + (idx + 1)}
                 onChange={(val) => onChangeInput(idx, val.publicKey)}
                 onRemove={() => onRemove(idx)}
-                acceptRemove
                 key={idx}
               />
             )
@@ -74,7 +70,7 @@ const Pda = ({ onChange }: { onChange: (val: string) => void }) => {
         {!!seeds.length && (
           <Button
             type="primary"
-            onClick={() => onChange(pdaAddress)}
+            onClick={() => onChange({ publicKey: pdaAddress })}
             disabled={!pdaAddress}
             block
           >
