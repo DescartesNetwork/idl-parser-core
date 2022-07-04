@@ -1,22 +1,18 @@
 import { useEffect } from 'react'
-import { Idl } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 import IonIcon from '@sentre/antd-ionicon'
+import { Idl } from '@project-serum/anchor'
 
-import Typography from '../components/typography'
 import ViewUploaded from './viewUploaded'
 
-import { useParser } from '../providers/parser.provider'
 import { IdlParser } from 'helpers'
+import { useParser } from '../providers/parser.provider'
+import { Typography } from 'components'
 
 const UploadFIle = () => {
-  const {
-    uploadIdl,
-    parser,
-    setProgramAddress,
-    programAddress: systemProgramAddr,
-  } = useParser()
+  const { uploadIdl, parser, setProgramAddress, programAddresses } = useParser()
   const { idl } = parser || {}
+  const { idl: idlProgramAddr } = programAddresses
 
   const upload = (file: FileList | null) => {
     if (!file) return
@@ -38,12 +34,9 @@ const UploadFIle = () => {
     if (!idl) return
 
     const programAddress = IdlParser.getProgramAddress(idl)
-    if (
-      account.isAddress(programAddress) &&
-      !account.isAddress(systemProgramAddr)
-    )
-      setProgramAddress(programAddress)
-  }, [idl, setProgramAddress, systemProgramAddr])
+    if (account.isAddress(programAddress) && programAddress !== idlProgramAddr)
+      setProgramAddress('idl', programAddress)
+  }, [idl, idlProgramAddr, setProgramAddress])
 
   if (!!idl) return <ViewUploaded />
 

@@ -1,13 +1,14 @@
 import { useState } from 'react'
 
-import Button from '../components/button'
 import ViewTxInstructions from './viewTxInstructions'
 
-import { useParser } from '../providers/parser.provider'
-import { convertStringDataToPubKey } from '../helpers'
-import { useProgram } from '../hooks/useProgram'
-import { useArgs } from '../hooks/useArgs'
-import { useRemainingAccounts } from '../hooks/useRemainingAccounts'
+import { Button } from 'components'
+
+import { convertStringDataToPubKey } from 'helpers'
+import { useParser } from 'providers/parser.provider'
+import { useProgram } from 'hooks/useProgram'
+import { useArgs } from 'hooks/useArgs'
+import { useRemainingAccounts } from 'hooks/useRemainingAccounts'
 
 const GenerateInstruction = () => {
   const [loading, setLoading] = useState(false)
@@ -29,7 +30,7 @@ const GenerateInstruction = () => {
 
       return setTxInstructions({ name: ixSelected, data: instruction })
     } catch (err) {
-      console.log(err, 'err')
+      console.log(err)
       return setTxInstructions()
     } finally {
       setLoading(false)
@@ -38,10 +39,10 @@ const GenerateInstruction = () => {
 
   return (
     <div className="grid grid-cols-1 gap-10">
-      <ViewTxInstructions />
-      <Button onClick={onInit} block loading={loading} type="primary">
+      <Button onClick={onInit} loading={loading} type="primary" block>
         Generate Instruction
       </Button>
+      <ViewTxInstructions />
     </div>
   )
 }

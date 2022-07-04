@@ -1,8 +1,9 @@
 import { utils, web3 } from '@project-serum/anchor'
+import { account } from '@senswap/sen-js'
 
 import Button from 'components/button'
 
-import { KeypairMeta } from 'providers/parser.provider'
+import { KeypairMeta, useParser } from 'providers/parser.provider'
 
 const SYSTEM_ACCOUNTS = [
   { name: 'systemProgram', value: web3.SystemProgram.programId },
@@ -16,8 +17,23 @@ const SystemAccount = ({
 }: {
   onChange: (val: KeypairMeta) => void
 }) => {
+  const { programAddresses } = useParser()
+  const { provider: providerProgramAddr } = programAddresses
+
   return (
     <div className="grid grid-cols-2 gap-4">
+      {/* Program address */}
+      {account.isAddress(providerProgramAddr) && (
+        <div>
+          <Button
+            type="primary"
+            onClick={() => onChange({ publicKey: providerProgramAddr })}
+            block
+          >
+            Program Address
+          </Button>
+        </div>
+      )}
       {SYSTEM_ACCOUNTS.map((account, idx) => (
         <div key={idx}>
           <Button
