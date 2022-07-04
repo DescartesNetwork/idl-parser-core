@@ -4,10 +4,10 @@ import IonIcon from '@sentre/antd-ionicon'
 import { Idl } from '@project-serum/anchor'
 
 import ViewUploaded from './viewUploaded'
+import { Typography } from '../components'
 
-import { IdlParser } from 'helpers'
 import { useParser } from '../providers/parser.provider'
-import { Typography } from 'components'
+import { IdlParser } from '../helpers'
 
 const UploadFIle = () => {
   const { uploadIdl, parser, setProgramAddress, programAddresses } = useParser()

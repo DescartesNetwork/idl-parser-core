@@ -1,9 +1,9 @@
+import { useMemo } from 'react'
 import { Idl, Program, web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
-import { useParser } from 'providers/parser.provider'
-import { useMemo } from 'react'
 import { useProvider } from './useProvider'
+import { useParser } from '../providers/parser.provider'
 
 const DEFAULT_IDL: Idl = {
   version: '0',

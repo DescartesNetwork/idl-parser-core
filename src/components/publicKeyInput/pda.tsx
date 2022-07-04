@@ -2,11 +2,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
-import { Button, Typography } from 'components'
 import PubicKeyInput from './index'
-import Input from 'components/input'
+import Button from '../button'
+import Typography from '../typography'
+import Input from '../input'
 
-import { KeypairMeta, useParser } from 'providers/parser.provider'
+import { KeypairMeta, useParser } from '../../providers/parser.provider'
 
 const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
   const [seeds, setSeeds] = useState<string[]>([''])
@@ -61,7 +62,6 @@ const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
   // set systemProgramAddress to default program address
   useEffect(() => {
     setProgramAddress(systemProgramAddr)
-    console.log('loop')
   }, [systemProgramAddr])
 
   return (

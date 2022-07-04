@@ -1,9 +1,10 @@
+import { useMemo } from 'react'
 import { utils, web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
-import Button from 'components/button'
+import Button from '../button'
 
-import { KeypairMeta, useParser } from 'providers/parser.provider'
+import { KeypairMeta, useParser } from '../../providers/parser.provider'
 
 const SYSTEM_ACCOUNTS = [
   { name: 'systemProgram', value: web3.SystemProgram.programId },
@@ -18,16 +19,25 @@ const SystemAccount = ({
   onChange: (val: KeypairMeta) => void
 }) => {
   const { programAddresses } = useParser()
-  const { provider: providerProgramAddr } = programAddresses
+  const {
+    customer: customProgramAddr,
+    idl: idlProgramAddr,
+    provider: providerProgramAddr,
+  } = programAddresses
+
+  const programAddress = useMemo(
+    () => customProgramAddr || idlProgramAddr || providerProgramAddr,
+    [customProgramAddr, idlProgramAddr, providerProgramAddr],
+  )
 
   return (
     <div className="grid grid-cols-2 gap-4">
       {/* Program address */}
-      {account.isAddress(providerProgramAddr) && (
+      {account.isAddress(programAddress) && (
         <div>
           <Button
             type="primary"
-            onClick={() => onChange({ publicKey: providerProgramAddr })}
+            onClick={() => onChange({ publicKey: programAddress })}
             block
           >
             Program Address

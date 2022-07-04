@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { useParser } from 'providers/parser.provider'
-import { AddressCategory } from 'types'
+import { useParser } from '../providers/parser.provider'
+import { AddressCategory } from '../types'
 
 export const useSuggestAccountCategory = () => {
   const { parser } = useParser()

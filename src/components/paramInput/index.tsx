@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { IdlType as AnchorIdlType } from '@project-serum/anchor/dist/cjs/idl'
 
 import IonIcon from '@sentre/antd-ionicon'
-import { PublicKeyInput, Modal, Typography } from 'components'
 import InitInput from './initInput'
 import WrapInput from './wrapInput'
-
-import { IdlParser } from 'helpers'
+import PublicKeyInput from '../publicKeyInput'
+import Typography from '../typography'
+import { IdlParser } from '../../helpers'
+import Modal from '../modal'
 
 type ParamInputProps = {
   name: string

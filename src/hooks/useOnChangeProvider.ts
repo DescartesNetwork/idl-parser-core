@@ -1,6 +1,6 @@
 import { web3 } from '@project-serum/anchor'
 import { Address } from '@project-serum/anchor'
-import { useParser } from 'providers/parser.provider'
+import { useParser } from '../providers/parser.provider'
 
 export const useOnChangeProvider = () => {
   const { setAccountsMeta } = useParser()

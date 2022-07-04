@@ -6,11 +6,15 @@ import ContextAccount from './contextAccount'
 import IdlAccount from './idlAccount'
 import TokenAccount from './tokenAccount'
 import Pda from './pda'
-import { Modal, Input, Button, Select, Typography } from 'components'
+import Typography from '../typography'
+import Input from '../input'
+import Button from '../button'
+import Select from '../select'
+import Modal from '../modal'
 
-import { KeypairMeta } from 'providers/parser.provider'
-import { useSuggestAccountCategory } from 'hooks/useSuggestAccountCategory'
-import { AddressCategory } from 'types'
+import { AddressCategory } from '../../types'
+import { KeypairMeta } from '../../providers/parser.provider'
+import { useSuggestAccountCategory } from '../../hooks/useSuggestAccountCategory'
 
 export const SELECT_SYSTEM = [
   AddressCategory.idl,

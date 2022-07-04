@@ -2,11 +2,14 @@ import { useCallback, useEffect, useState } from 'react'
 import { web3 } from '@project-serum/anchor'
 
 import IonIcon from '@sentre/antd-ionicon'
-import { Input, Button, Typography, Select, Empty } from 'components'
-import { Spinner } from 'components/button'
+import Typography from '../typography'
+import Input from '../input'
+import Button, { Spinner } from '../button'
+import Select from '../select'
+import Empty from '../empty'
 
-import { KeypairMeta, useParser } from 'providers/parser.provider'
-import { useProgram } from 'hooks/useProgram'
+import { KeypairMeta, useParser } from '../../providers/parser.provider'
+import { useProgram } from '../../hooks/useProgram'
 
 const Cache: { [x: string]: any } = {}
 

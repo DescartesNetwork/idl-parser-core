@@ -2,10 +2,10 @@ import { Idl, web3, BN } from '@project-serum/anchor'
 import { IdlInstruction, IdlType } from '@project-serum/anchor/dist/cjs/idl'
 import { PublicKey } from '@solana/web3.js'
 import {
-  KeypairMeta,
   ArgsMeta,
   IDLParserState,
-} from 'providers/parser.provider'
+  KeypairMeta,
+} from '../providers/parser.provider'
 
 export const fileToBase64 = (
   file: File,

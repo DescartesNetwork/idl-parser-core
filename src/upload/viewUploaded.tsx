@@ -3,7 +3,7 @@ import { account } from '@senswap/sen-js'
 
 import IonIcon from '@sentre/antd-ionicon'
 import UploadFIle from './uploadFile'
-import { Input, Typography } from 'components'
+import { Input, Typography } from '../components'
 
 import { useParser } from '../providers/parser.provider'
 
@@ -78,9 +78,9 @@ type ViewUploadedProps = { acceptViewProgramAddr?: boolean }
 const ViewUploaded = ({ acceptViewProgramAddr = false }: ViewUploadedProps) => {
   const { parser, removeIdl, programAddresses } = useParser()
   const { idl } = parser || {}
-  const { provider: providerProgramAddr } = programAddresses
+  const { idl: idlProgramAddr } = programAddresses
 
-  const isEmptyProgramAddr = !account.isAddress(providerProgramAddr)
+  const isEmptyProgramAddr = !account.isAddress(idlProgramAddr)
   const clnTextColor = isEmptyProgramAddr ? 'text-[#F9575E]' : 'text-green-600'
 
   const remove = () => {

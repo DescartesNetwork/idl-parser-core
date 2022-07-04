@@ -1,14 +1,13 @@
 import { useState } from 'react'
 
+import { Button } from '../components'
 import ViewTxInstructions from './viewTxInstructions'
 
-import { Button } from 'components'
-
-import { convertStringDataToPubKey } from 'helpers'
-import { useParser } from 'providers/parser.provider'
-import { useProgram } from 'hooks/useProgram'
-import { useArgs } from 'hooks/useArgs'
-import { useRemainingAccounts } from 'hooks/useRemainingAccounts'
+import { convertStringDataToPubKey } from '../helpers'
+import { useArgs } from '../hooks/useArgs'
+import { useProgram } from '../hooks/useProgram'
+import { useRemainingAccounts } from '../hooks/useRemainingAccounts'
+import { useParser } from '../providers/parser.provider'
 
 const GenerateInstruction = () => {
   const [loading, setLoading] = useState(false)

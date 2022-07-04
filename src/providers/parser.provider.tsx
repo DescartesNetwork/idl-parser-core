@@ -48,6 +48,7 @@ export type SetArgsMetaState = {
   name: string
   val: string
 }
+type ProgramAddressKey = 'provider' | 'idl' | 'customer'
 export type ProgramAddress = {
   idl?: string
   provider: string
@@ -68,7 +69,7 @@ export type ParserProvider = {
   walletAddress?: string
   txInstructions?: Record<string, TransactionInstruction>
   setRemainingAccouts: (args: SetRemainingAccounts) => void
-  setProgramAddress: (name: string, programAddress: string) => void
+  setProgramAddress: (name: ProgramAddressKey, programAddress: string) => void
 }
 
 const DEFAULT_PARSER_IDL: IDLParserState = {
@@ -184,7 +185,7 @@ const IDLParserContextProvider = ({
   )
 
   const setProgramAddress = useCallback(
-    (name, address) => {
+    (name: ProgramAddressKey, address: string) => {
       const nextData = { ...stateProgramAddresses }
       if (account.isAddress(address) && !!name) nextData[name] = address
 

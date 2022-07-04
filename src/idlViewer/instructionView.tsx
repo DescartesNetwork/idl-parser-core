@@ -7,10 +7,10 @@ import {
   Segmented,
   Typography,
 } from '../components'
-import RemainingInput from 'components/remainingInput'
+import RemainingInput from '../components/remainingInput'
 
+import { useIdlInstruction } from '../hooks/useIdlInstruction'
 import { useParser } from '../providers/parser.provider'
-import { useIdlInstruction } from 'hooks/useIdlInstruction'
 
 enum Tabs {
   Accounts = 'accounts',

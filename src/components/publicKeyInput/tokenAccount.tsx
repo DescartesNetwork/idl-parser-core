@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { utils, web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
+import Button from '../button'
 import PublicKeyInput from './index'
-import Button from 'components/button'
 
-import { KeypairMeta } from 'providers/parser.provider'
+import { KeypairMeta } from '../../providers/parser.provider'
 
 const TokenAccount = ({
   onChange,

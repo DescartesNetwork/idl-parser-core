@@ -1,7 +1,10 @@
 import { web3 } from '@project-serum/anchor'
-import { Button, Input, Typography } from 'components'
 
-import { KeypairMeta, useParser } from 'providers/parser.provider'
+import Button from '../button'
+import Input from '../input'
+import Typography from '../typography'
+
+import { KeypairMeta, useParser } from '../../providers/parser.provider'
 
 type ContextAccountProps = {
   onChange: (value: KeypairMeta) => void
@@ -20,7 +23,7 @@ const ContextAccount = ({ onChange }: ContextAccountProps) => {
   }
 
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-6">
       {walletAddress && (
         <div className="grid grid-cols-2 gap-4">
           <Button
