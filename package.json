@@ -1,6 +1,6 @@
 {
-  "name": "idl-parser",
-  "version": "0.3.36",
+  "name": "idl-parser-core",
+  "version": "0.3.38",
   "description": "",
   "main": "./src/index.ts",
   "scripts": {

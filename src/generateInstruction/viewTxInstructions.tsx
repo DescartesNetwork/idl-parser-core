@@ -8,7 +8,8 @@ import { useParser } from '../providers/parser.provider'
 const ViewTxInstructions = () => {
   const { txInstructions } = useParser()
 
-  if (!txInstructions) return <Fragment />
+  if (!txInstructions || !Object.keys(txInstructions).length)
+    return <Fragment />
 
   const keyTxInstructs = Object.keys(txInstructions || {})
 
