@@ -1,13 +1,9 @@
-import { useCallback, useState } from 'react'
+import { Fragment, useCallback, useState } from 'react'
 
-import {
-  PublicKeyInput,
-  ParamInput,
-  Empty,
-  Segmented,
-  Typography,
-} from '../components'
+import ParamInput from '../components/paramInput'
+import PublicKeyInput from '../components/publicKeyInput'
 import RemainingInput from '../components/remainingInput'
+import { Empty, Segmented, Typography } from '../components/ui'
 
 import { useIdlInstruction } from '../hooks/useIdlInstruction'
 import { useParser } from '../providers/parser.provider'
@@ -22,7 +18,8 @@ export const InstructorAccounts = () => {
   const { accountsMetas: accountsMeta, ixSelected } = parser || {}
   const idlInstruction = useIdlInstruction(ixSelected)
 
-  if (!idlInstruction?.accounts.length) return <Empty />
+  if (!idlInstruction?.accounts.length)
+    return <Empty className="relative top-[50%] translate-y-[-50%]" />
   return (
     <div className="grid grid-cols-1 gap-6">
       <div className="flex flex-col gap-4">
@@ -64,7 +61,8 @@ export const InstructorArguments = () => {
     [ixSelected, setArgsMeta],
   )
 
-  if (!idlInstruction?.args.length) return <Empty />
+  if (!idlInstruction?.args.length)
+    return <Empty className="relative top-[50%] translate-y-[-50%]" />
   return (
     <div className="flex flex-col gap-4">
       {idlInstruction.args.map(({ name, type }, idx) => (
@@ -80,24 +78,35 @@ export const InstructorArguments = () => {
   )
 }
 
-const InstructionView = () => {
-  const [selected, setSelected] = useState('accounts')
+type InstructionContentProps = { selected: string }
+const InstructionContent = ({ selected }: InstructionContentProps) => {
   const { parser } = useParser()
   const { idl } = parser || {}
 
-  if (!idl) return <Empty />
+  if (!idl) return <Empty className="relative top-[50%] translate-y-[-50%]" />
+
   return (
-    <div className="flex flex-col gap-5">
-      <div>
+    <Fragment>
+      {selected === Tabs.Accounts && <InstructorAccounts />}
+      {selected === Tabs.Arguments && <InstructorArguments />}
+    </Fragment>
+  )
+}
+
+const InstructionView = () => {
+  const [selected, setSelected] = useState('accounts')
+
+  return (
+    <div className="flex flex-col gap-6 h-full">
+      <div className="flex flex-col items-center">
         <Segmented
           value={selected}
           options={[Tabs.Accounts, Tabs.Arguments]}
           onChange={setSelected}
         />
       </div>
-      <div>
-        {selected === Tabs.Accounts && <InstructorAccounts />}
-        {selected === Tabs.Arguments && <InstructorArguments />}
+      <div className="h-full">
+        <InstructionContent selected={selected} />
       </div>
     </div>
   )

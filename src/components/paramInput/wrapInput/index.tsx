@@ -3,9 +3,7 @@ import IonIcon from '@sentre/antd-ionicon'
 import { IdlType as AnchorIdlType } from '@project-serum/anchor/dist/cjs/idl'
 import BoolInput from './boolInput'
 import InitInput from '../initInput'
-import Button from '../../button'
-import Input from '../../input'
-import Typography from '../../typography'
+import { Button, Input, Typography } from '../../ui'
 
 type WrapInputProps = {
   value: string

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import RadioButton from '../components/radioButton'
+import { RadioButton } from '../components/ui'
 
 import { useParser } from '../providers/parser.provider'
 
@@ -15,7 +15,7 @@ const TemplateView = () => {
   }
 
   return (
-    <div className="grid gap-4 xs:grid-cols-1 sm:grid-cols-2">
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
       {idl?.instructions.map((instruc, idx) => (
         <RadioButton
           value={instruc.name}

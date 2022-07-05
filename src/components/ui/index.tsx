@@ -1,6 +1,3 @@
-import ParamInput from './paramInput'
-import PublicKeyInput from './publicKeyInput'
-
 // Ui
 import Button from './button'
 import Empty from './empty'
@@ -15,8 +12,6 @@ import Tooltip from './tooltip'
 import Typography from './typography'
 
 export {
-  ParamInput,
-  PublicKeyInput,
   Button,
   Empty,
   Expand,

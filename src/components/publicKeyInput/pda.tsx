@@ -3,11 +3,9 @@ import { web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
 import PubicKeyInput from './index'
-import Button from '../button'
-import Typography from '../typography'
-import Input from '../input'
 
 import { KeypairMeta, useParser } from '../../providers/parser.provider'
+import { Button, Input, Typography } from '../ui'
 
 const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
   const [seeds, setSeeds] = useState<string[]>([''])

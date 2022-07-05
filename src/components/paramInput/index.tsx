@@ -5,9 +5,9 @@ import IonIcon from '@sentre/antd-ionicon'
 import InitInput from './initInput'
 import WrapInput from './wrapInput'
 import PublicKeyInput from '../publicKeyInput'
-import Typography from '../typography'
+import { Modal, Typography } from '../ui'
+
 import { IdlParser } from '../../helpers'
-import Modal from '../modal'
 
 type ParamInputProps = {
   name: string

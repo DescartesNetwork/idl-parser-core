@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { utils, web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
-import Button from '../button'
+import Button from '../ui/button'
 
 import { KeypairMeta, useParser } from '../../providers/parser.provider'
 

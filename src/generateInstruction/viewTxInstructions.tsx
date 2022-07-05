@@ -1,7 +1,5 @@
 import { Fragment } from 'react'
-
-import Expand from '../components/expand'
-import Typography from '../components/typography'
+import { Expand, Typography } from '../components/ui'
 
 import { useParser } from '../providers/parser.provider'
 

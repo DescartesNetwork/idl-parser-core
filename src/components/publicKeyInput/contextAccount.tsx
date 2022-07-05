@@ -1,8 +1,6 @@
 import { web3 } from '@project-serum/anchor'
 
-import Button from '../button'
-import Input from '../input'
-import Typography from '../typography'
+import { Button, Input, Typography } from '../ui'
 
 import { KeypairMeta, useParser } from '../../providers/parser.provider'
 

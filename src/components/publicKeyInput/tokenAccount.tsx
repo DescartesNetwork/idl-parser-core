@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { utils, web3 } from '@project-serum/anchor'
 import { account } from '@senswap/sen-js'
 
-import Button from '../button'
+import Button from '../ui/button'
 import PublicKeyInput from './index'
 
 import { KeypairMeta } from '../../providers/parser.provider'

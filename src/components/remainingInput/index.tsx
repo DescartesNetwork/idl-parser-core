@@ -1,12 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import IonIcon from '@sentre/antd-ionicon'
 
-import Button from '../button'
-import Typography from '../typography'
-import Switch from '../switch'
-import Input from '../input'
-
 import { AccountMetaAddress, useParser } from '../../providers/parser.provider'
+import { Button, Input, Switch, Typography } from '../ui'
 
 const DEFAULT_REMAINING_ACCOUNT: AccountMetaAddress = {
   isSigner: false,
