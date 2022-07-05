@@ -8,7 +8,7 @@ type ContextAccountProps = {
   onChange: (value: KeypairMeta) => void
 }
 
-const ContextAccount = ({ onChange }: ContextAccountProps) => {
+const RecentAccount = ({ onChange }: ContextAccountProps) => {
   const { parser, walletAddress } = useParser()
   const { accountsMetas: accountsMeta } = parser || {}
 
@@ -66,4 +66,4 @@ const ContextAccount = ({ onChange }: ContextAccountProps) => {
   )
 }
 
-export default ContextAccount
+export default RecentAccount

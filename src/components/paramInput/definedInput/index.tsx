@@ -3,9 +3,9 @@ import {
   IdlTypeDefTyStruct,
 } from '@project-serum/anchor/dist/cjs/idl'
 
-import Typography from '../../typography'
 import EnumInput from './enumInput'
 import StructInput from './structInput'
+import { Typography } from '../../ui'
 
 import { useParser } from '../../../providers/parser.provider'
 

@@ -1,11 +1,8 @@
-import {
-  GenerateInstructionAction,
-  ViewTxInstructions,
-} from '../generateInstruction'
+import ViewTxInstructions from '../generateInstruction/viewTxInstructions'
 import { InstructionView, TemplateView } from '../idlViewer'
 import ViewUploaded from '../upload/viewUploaded'
 
-const IdlParser = () => {
+const IdlParserWrapper = () => {
   return (
     <div className="grid grid:cols-1 gap-6">
       <div className="flex w-full flex-col md:flex-row gap-10 md:gap-6">
@@ -18,15 +15,6 @@ const IdlParser = () => {
         </div>
       </div>
       <ViewTxInstructions />
-    </div>
-  )
-}
-
-const IdlParserWrapper = () => {
-  return (
-    <div className="grid grid-cols-1 p-4 gap-6">
-      <IdlParser />
-      <GenerateInstructionAction />
     </div>
   )
 }

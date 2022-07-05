@@ -10,6 +10,7 @@ import Select from './select'
 import Switch from './switch'
 import Tooltip from './tooltip'
 import Typography from './typography'
+import LoadingMask from './loadingMask'
 
 export {
   Button,
@@ -23,4 +24,5 @@ export {
   Switch,
   Tooltip,
   Typography,
+  LoadingMask,
 }
