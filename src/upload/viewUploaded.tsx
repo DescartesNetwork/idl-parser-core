@@ -77,10 +77,12 @@ const ViewProgramAddress = () => {
 const ViewUploaded = () => {
   const { parser, removeIdl, programAddresses } = useParser()
   const { idl } = parser || {}
-  const { provider: providerProgramAddr } = programAddresses
+  const { idl: idlProgramAddr } = programAddresses
 
-  const isEmptyProgramAddr = !account.isAddress(providerProgramAddr)
-  const clnTextColor = isEmptyProgramAddr ? 'text-[#F9575E]' : 'text-green-600'
+  const isEmptyIdlProgramAddr = !account.isAddress(idlProgramAddr)
+  const clnTextColor = isEmptyIdlProgramAddr
+    ? 'text-[#F9575E]'
+    : 'text-green-600'
 
   const remove = () => {
     removeIdl()
