@@ -12,6 +12,7 @@ import { Button, Input, Modal, Select, Typography } from '../ui'
 import { AddressCategory } from '../../types'
 import { KeypairMeta, useParser } from '../../providers/parser.provider'
 import { useSuggestAccountCategory } from '../../hooks/useSuggestAccountCategory'
+import { getAutocompleteSystemAccount } from '../../helpers'
 
 export const SELECT_SYSTEM = [
   AddressCategory.walletAddress,
@@ -63,14 +64,6 @@ const PublicKeyInput = ({
   const { findDefaultCategory } = useSuggestAccountCategory()
   const { walletAddress } = useParser()
 
-  // Select default category
-  useEffect(() => {
-    if (!category) {
-      const defaultCategory = findDefaultCategory(accountName)
-      setCategory(defaultCategory)
-    }
-  }, [category, findDefaultCategory, accountName])
-
   const onChangePublicKey = (keypair: KeypairMeta) => {
     onChange(keypair)
     setVisible(false)
@@ -90,6 +83,19 @@ const PublicKeyInput = ({
     }
     setVisible(true)
   }
+
+  // Select default category
+  useEffect(() => {
+    if (!category) {
+      const defaultCategory = findDefaultCategory(accountName)
+      const suggestAutoCompleteAccount =
+        getAutocompleteSystemAccount(accountName)
+      if (!!suggestAutoCompleteAccount)
+        onChange({ publicKey: suggestAutoCompleteAccount })
+
+      setCategory(defaultCategory)
+    }
+  }, [accountName, category, findDefaultCategory, onChange])
 
   if (!category) return <Fragment />
 
@@ -115,6 +121,11 @@ const PublicKeyInput = ({
           style={{ minWidth: 120 }}
           value={category}
           onChange={(e) => onSelectCategory(e.target.value as AddressCategory)}
+          suffix={
+            <Button type="text" onClick={() => onSelectCategory(category)}>
+              <IonIcon name="open-outline" />
+            </Button>
+          }
         >
           {SELECT_SYSTEM.map((item, idx) => (
             <option

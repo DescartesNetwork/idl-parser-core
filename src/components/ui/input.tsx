@@ -1,8 +1,8 @@
 import {
   CSSProperties,
-  forwardRef,
   InputHTMLAttributes,
   ReactNode,
+  forwardRef,
 } from 'react'
 
 type InputProps = {

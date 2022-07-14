@@ -11,6 +11,7 @@ const SYSTEM_ACCOUNTS = [
   { name: 'rent', value: web3.SYSVAR_RENT_PUBKEY },
   { name: 'tokenProgram', value: utils.token.TOKEN_PROGRAM_ID },
   { name: 'associatedTokenProgram', value: utils.token.ASSOCIATED_PROGRAM_ID },
+  { name: 'sysvarClockProgram', value: web3.SYSVAR_CLOCK_PUBKEY },
 ]
 
 const SystemAccount = ({
