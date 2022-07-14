@@ -9,7 +9,7 @@
     "build:css": "tailwindcss build lib.css -o src/index.css",
     "build:minify": "minify src/index.css > src/index.min.css",
     "gpush": "git add . && git commit -m '_' && git pull && git push",
-    "public": "npm run gpush && npm publish --access=public"
+    "public": "npm run gpush && npm publish ./dist"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   "homepage": "https://github.com/DescartesNetwork/idl-parser#readme",
   "devDependencies": {
     "@types/bn.js": "^5.1.0",
+    "@types/node-fetch": "^2.6.2",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.5",
     "minify": "^8.0.4",
