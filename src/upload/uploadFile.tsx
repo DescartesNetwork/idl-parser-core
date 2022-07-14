@@ -23,7 +23,7 @@ const UploadFIle = () => {
         if (!e.target?.result) return
         const idl = JSON.parse(e.target.result.toString()) as Idl
         let validIdl = idl.name && idl.instructions.length && idl.version
-        if (validIdl) return
+        if (!validIdl) return
 
         const programAddress = IdlParser.getProgramAddress(idl)
         if (
