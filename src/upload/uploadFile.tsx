@@ -23,7 +23,15 @@ const UploadFIle = () => {
         if (!e.target?.result) return
         const idl = JSON.parse(e.target.result.toString()) as Idl
         let validIdl = idl.name && idl.instructions.length && idl.version
-        if (validIdl) return uploadIdl(idl)
+        if (validIdl) return
+
+        const programAddress = IdlParser.getProgramAddress(idl)
+        if (
+          account.isAddress(programAddress) &&
+          programAddress !== idlProgramAddr
+        )
+          setProgramAddress('idl', programAddress)
+        return uploadIdl(idl)
       } catch (err: any) {
         // do notthing
       }
@@ -32,10 +40,6 @@ const UploadFIle = () => {
 
   useEffect(() => {
     if (!idl) return
-
-    const programAddress = IdlParser.getProgramAddress(idl)
-    if (account.isAddress(programAddress) && programAddress !== idlProgramAddr)
-      setProgramAddress('idl', programAddress)
   }, [idl, idlProgramAddr, setProgramAddress])
 
   if (!!idl) return <ViewUploaded />

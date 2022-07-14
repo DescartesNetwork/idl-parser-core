@@ -27,6 +27,7 @@
   "homepage": "https://github.com/DescartesNetwork/idl-parser#readme",
   "devDependencies": {
     "@types/bn.js": "^5.1.0",
+    "@types/node-fetch": "^2.6.2",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.5",
     "minify": "^8.0.4",
