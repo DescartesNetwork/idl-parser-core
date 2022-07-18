@@ -13,6 +13,7 @@ import { AddressCategory } from '../../types'
 import { KeypairMeta, useParser } from '../../providers/parser.provider'
 import { useSuggestAccountCategory } from '../../hooks/useSuggestAccountCategory'
 import { getAutocompleteSystemAccount } from '../../helpers'
+import Selection from '../ui/selection'
 
 export const SELECT_SYSTEM = [
   AddressCategory.walletAddress,
@@ -117,26 +118,14 @@ const PublicKeyInput = ({
             </Button>
           }
         />
-        <Select
-          style={{ minWidth: 120 }}
-          value={category}
-          onChange={(e) => onSelectCategory(e.target.value as AddressCategory)}
-          suffix={
-            <Button type="text" onClick={() => onSelectCategory(category)}>
-              <IonIcon name="open-outline" />
-            </Button>
-          }
-        >
-          {SELECT_SYSTEM.map((item, idx) => (
-            <option
-              style={{ textTransform: 'capitalize' }}
-              value={item}
-              key={idx}
-            >
-              {item}
-            </option>
-          ))}
-        </Select>
+        <Selection
+          style={{ maxWidth: 180 }}
+          options={SELECT_SYSTEM.map((item) => {
+            return { label: item, value: item }
+          })}
+          selected={category}
+          onSelected={(val) => onSelectCategory(val as AddressCategory)}
+        />
         {onRemove && (
           <Button
             type="text"

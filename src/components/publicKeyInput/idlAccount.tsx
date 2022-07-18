@@ -7,6 +7,7 @@ import { KeypairMeta, useParser } from '../../providers/parser.provider'
 import { useProgram } from '../../hooks/useProgram'
 import { Empty, Input, Select, Typography, Button } from '../ui'
 import { Spinner } from '../ui/button'
+import Selection, { DUMMY_OPTION_VALUE } from '../ui/selection'
 
 const Cache: { [x: string]: any } = {}
 
@@ -74,6 +75,10 @@ const IdlAccount = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
     if (fistAccount && !accountType) setAccountType(fistAccount)
   }, [accountType, idl?.accounts])
 
+  const options = idl?.accounts?.map(({ name }) => {
+    return { label: name, value: name }
+  }) || [DUMMY_OPTION_VALUE]
+
   return (
     <div className="flex flex-col gap-8">
       <div className="grid grid-cols-1 gap-1">
@@ -86,19 +91,12 @@ const IdlAccount = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
             preffix={loading ? <Spinner /> : <IonIcon name="search-outline" />}
             className="flex-auto stroke-slate-500"
           />
-          <Select
-            value={accountType}
-            onChange={(e) => setAccountType(e.target.value)}
-            style={{ minWidth: 120, minHeight: 32 }}
-          >
-            {idl?.accounts?.map((acc, idx) => {
-              return (
-                <option value={acc.name} key={idx}>
-                  {acc.name}
-                </option>
-              )
-            })}
-          </Select>
+          <Selection
+            options={options}
+            selected={accountType}
+            onSelected={setAccountType}
+            style={{ maxWidth: 180 }}
+          />
         </div>
       </div>
 
