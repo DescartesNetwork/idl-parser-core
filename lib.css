@@ -120,3 +120,9 @@ h4,
 h5 {
   margin-bottom: 0 !important;
 }
+
+/* Ionicon */
+.anticon {
+  /* Fit icon height to align */
+  display: flex;
+}

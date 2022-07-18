@@ -1247,6 +1247,13 @@ h5 {
   margin-bottom: 0 !important;
 }
 
+/* Ionicon */
+
+.anticon {
+  /* Fit icon height to align */
+  display: flex;
+}
+
 .before\:absolute::before {
   content: var(--tw-content);
   position: absolute;
