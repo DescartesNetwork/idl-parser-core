@@ -57,7 +57,7 @@ export const InstructorArguments = () => {
         val,
       })
     },
-    [ixSelected, setArgsMeta],
+    [setArgsMeta],
   )
 
   if (!idlInstruction?.args.length)
