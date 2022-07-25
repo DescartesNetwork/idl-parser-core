@@ -6,7 +6,7 @@ import RemainingInput from '../components/remainingInput'
 import { Empty, Segmented, Typography } from '../components/ui'
 
 import { useIdlInstruction } from '../hooks/useIdlInstruction'
-import { useParser } from '../providers/parser.provider'
+import { KeypairMeta, useParser } from '../providers/parser.provider'
 
 enum Tabs {
   Accounts = 'accounts',
@@ -14,9 +14,14 @@ enum Tabs {
 }
 
 export const InstructorAccounts = () => {
-  const { parser, setAccountsMeta } = useParser()
+  const { parser, setAccountsMeta, setRecents } = useParser()
   const { accountsMetas: accountsMeta, ixSelected } = parser || {}
   const idlInstruction = useIdlInstruction(ixSelected)
+
+  const onChange = (name: string, accData: KeypairMeta) => {
+    setAccountsMeta({ name: name, data: accData })
+    setRecents({ name: name, value: accData.publicKey })
+  }
 
   if (!idlInstruction?.accounts.length)
     return <Empty className="relative top-[50%] translate-y-[-50%]" />
@@ -26,9 +31,7 @@ export const InstructorAccounts = () => {
         <Typography className="font-bold text-[18px]">Accounts</Typography>
         {idlInstruction.accounts.map((account, idx) => (
           <PublicKeyInput
-            onChange={(accData) =>
-              setAccountsMeta({ name: account.name, data: accData })
-            }
+            onChange={(accData) => onChange(account.name, accData)}
             accountName={account.name}
             value={accountsMeta[account.name]?.publicKey}
             key={idx}

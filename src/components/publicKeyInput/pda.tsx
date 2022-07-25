@@ -11,7 +11,7 @@ const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
   const [seeds, setSeeds] = useState<string[]>([''])
   const [programAddress, setProgramAddress] = useState('')
   const [pdaAddress, setPdaAddress] = useState('')
-  const { programAddresses } = useParser()
+  const { programAddresses, setRecents } = useParser()
   const {
     customer: customProgramAddr,
     idl: idlProgramAddr,
@@ -38,6 +38,7 @@ const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
     const newSeed = [...seeds]
     newSeed[idx] = val
     setSeeds(newSeed)
+    setRecents({ name: 'PDA-others', value: val })
   }
 
   const deriveNewPDAAddress = useCallback(async () => {

@@ -8,6 +8,7 @@ import PublicKeyInput from '../publicKeyInput'
 import { Modal, Typography } from '../ui'
 
 import { IdlParser } from '../../helpers'
+import { useParser } from '../../providers/parser.provider'
 
 type ParamInputProps = {
   name: string
@@ -26,17 +27,22 @@ const ParamInput = ({
   onRemove,
 }: ParamInputProps) => {
   const [visible, setVisible] = useState(false)
+  const { setRecents } = useParser()
 
-  const onChangeWrapInput = (val: string) => {
-    onChange(val)
+  const onChangeWrapInput = (value: string) => {
+    onChange(value)
     setVisible(false)
+    setRecents({ name, value })
   }
 
   if (idlType === 'publicKey')
     return (
       <PublicKeyInput
         accountName={name}
-        onChange={(acc) => onChange(acc.publicKey)}
+        onChange={(acc) => {
+          onChange(acc.publicKey)
+          setRecents({ name, value: acc.publicKey })
+        }}
         value={value}
       />
     )

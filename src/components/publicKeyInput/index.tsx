@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, Fragment, useCallback } from 'react'
 import { web3 } from '@project-serum/anchor'
 
 import IonIcon from '@sentre/antd-ionicon'
@@ -7,13 +7,13 @@ import RecentAccount from './recentAccount'
 import IdlAccount from './idlAccount'
 import TokenAccount from './tokenAccount'
 import Pda from './pda'
-import { Button, Input, Modal, Select, Typography } from '../ui'
+import { Button, Input, Modal, Typography } from '../ui'
+import Selection from '../ui/selection'
 
 import { AddressCategory } from '../../types'
 import { KeypairMeta, useParser } from '../../providers/parser.provider'
 import { useSuggestAccountCategory } from '../../hooks/useSuggestAccountCategory'
 import { getAutocompleteSystemAccount } from '../../helpers'
-import Selection from '../ui/selection'
 
 export const SELECT_SYSTEM = [
   AddressCategory.walletAddress,
@@ -21,7 +21,7 @@ export const SELECT_SYSTEM = [
   AddressCategory.idl,
   AddressCategory.token,
   AddressCategory.pda,
-  AddressCategory.recent,
+  AddressCategory.recents,
   AddressCategory.system,
 ]
 
@@ -32,7 +32,7 @@ type ModalViewProps = {
 
 const ModalView = ({ inputType, onChange }: ModalViewProps) => {
   switch (inputType) {
-    case AddressCategory.recent:
+    case AddressCategory.recents:
       return <RecentAccount onChange={onChange} />
     case AddressCategory.idl:
       return <IdlAccount onChange={onChange} />
@@ -65,10 +65,13 @@ const PublicKeyInput = ({
   const { findDefaultCategory } = useSuggestAccountCategory()
   const { walletAddress } = useParser()
 
-  const onChangePublicKey = (keypair: KeypairMeta) => {
-    onChange(keypair)
-    setVisible(false)
-  }
+  const onChangePublicKey = useCallback(
+    (keypair: KeypairMeta) => {
+      onChange(keypair)
+      setVisible(false)
+    },
+    [onChange],
+  )
 
   const onSelectCategory = (category: AddressCategory) => {
     setCategory(category)
@@ -118,6 +121,7 @@ const PublicKeyInput = ({
             </Button>
           }
         />
+
         <Selection
           style={{ maxWidth: 180 }}
           options={SELECT_SYSTEM.map((item) => {

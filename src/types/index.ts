@@ -1,8 +1,8 @@
 export enum AddressCategory {
-  recent = 'Recent',
+  recents = 'Recents',
   system = 'System',
   idl = 'Program Account Data',
-  token = 'PDA - Token Account',
+  token = 'PAD - Token Account',
   pda = 'PDA - Other',
   input = 'input',
   walletAddress = 'Wallet Address',
