@@ -53,7 +53,6 @@ export const InstructorArguments = () => {
   const onChange = useCallback(
     (name: string, val: string) => {
       return setArgsMeta({
-        instructName: ixSelected,
         name,
         val,
       })
