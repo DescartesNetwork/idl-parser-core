@@ -29,7 +29,7 @@ export const useSuggestProgramAccounts = () => {
   const programAddr = useProgramAddress()
   const { onChangeAccount } = useOnChangeProvider()
 
-  const currentAccounts = useMemo(() => {
+  const getCurrentAccounts = useCallback(() => {
     const accounts: string[] = []
     for (const acc of ixIdl.accounts) {
       let accountAddr = accountsMetas[acc.name]
@@ -44,6 +44,7 @@ export const useSuggestProgramAccounts = () => {
 
   const getExplorerAddress = useCallback(async () => {
     const pubKeys: web3.PublicKey[] = []
+    const currentAccounts = getCurrentAccounts()
     for (const addr of currentAccounts)
       if (addr) pubKeys.push(new web3.PublicKey(addr))
 
@@ -56,7 +57,7 @@ export const useSuggestProgramAccounts = () => {
         return data.publicKey
       }
     }
-  }, [connection, currentAccounts, programAddr])
+  }, [connection, getCurrentAccounts, programAddr])
 
   const fetchIxLogs = useCallback(async () => {
     const explorerAddress = await getExplorerAddress()
