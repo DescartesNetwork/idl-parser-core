@@ -26,7 +26,7 @@ type AccountTracking = {
 
 export const useSuggestProgramAccounts = (accountName: string) => {
   const {
-    connection,
+    rpc,
     parser: { ixSelected, accountsMetas },
   } = useParser()
   const [loading, setLoading] = useState(false)
@@ -56,7 +56,7 @@ export const useSuggestProgramAccounts = (accountName: string) => {
     const accountDatas = await DataLoader.load(
       `getExplorerAddress:${JSON.stringify(currentAccounts)}`,
       () => {
-        return getMultipleAccounts(new web3.Connection(connection), pubKeys)
+        return getMultipleAccounts(new web3.Connection(rpc), pubKeys)
       },
     )
 
@@ -65,7 +65,7 @@ export const useSuggestProgramAccounts = (accountName: string) => {
         return data.publicKey
       }
     }
-  }, [connection, getCurrentAccounts, programAddr])
+  }, [rpc, getCurrentAccounts, programAddr])
 
   const fetchIxLogs = useCallback(async () => {
     const explorerAddress = await getExplorerAddress()
@@ -74,7 +74,7 @@ export const useSuggestProgramAccounts = (accountName: string) => {
     const transLogs = await DataLoader.load(
       `fetchIxLogs:${explorerAddress}`,
       () => {
-        const explorer = new SolanaExplorer(new web3.Connection(connection))
+        const explorer = new SolanaExplorer(new web3.Connection(rpc))
         return explorer.fetchTransactions(explorerAddress.toBase58(), {})
       },
     )
@@ -92,7 +92,7 @@ export const useSuggestProgramAccounts = (accountName: string) => {
       }
     }
     return ixLogs
-  }, [connection, getExplorerAddress, ixSelected, programAddr])
+  }, [rpc, getExplorerAddress, ixSelected, programAddr])
 
   const getAccountIndex = useCallback(() => {
     for (let i = 0; i < ixIdl.accounts.length; i++)

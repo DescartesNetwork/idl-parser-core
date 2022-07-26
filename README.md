@@ -11,12 +11,12 @@
 ```js
 import { ParserProvider } from 'idl-parser-core'
 
-const NODE: 'https://api.devnet.solana.com'
+const RPC: 'https://api.devnet.solana.com'
 
 const App = () => {
   return (
     <ParserProvider
-      connection={NODE}
+      rpc={RPC}
       walletAddress={walletAddress}
       programAddresses={{ provider }}
     >
@@ -26,9 +26,10 @@ const App = () => {
 }
 ```
 
-> connection: rpc api url address \
+> rpc: rpc api url address \
 > walletAddress: user wallet address \
-> programAddresses: địa chỉ chương trình smartcontract
+> programAddresses: địa chỉ chương trình smartcontract\
+> appId: id html element hiển thị modal.
 
 ## Component
 
@@ -89,7 +90,7 @@ _Cung cấp các function để thao tác với dữ liệu, thêm, sửa, xoá 
     - **argsMetas**: dữ liệu argsMetas.
     - **ixSelected**: instruction đang được chọn.
     - **remainingAccounts**: dữ liệu remainingAccounts.
-  - **connection**: địa chỉ rpc blockchain.
+  - **rpc**: địa chỉ rpc blockchain.
   - **walletAddress**: địa chỉ ví của người dùng.
   - **programAddresses**: địa chỉ chương trình smartcontract.\
     **`programAddress.idl`** địa chỉ program được lấy từ file IDL tải lên.\

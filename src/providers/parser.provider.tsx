@@ -66,8 +66,9 @@ export type ParserProvider = {
   setAccountsMeta: (args: SetAccountsMetaState) => void
   removeIdl: () => void
   setTxInstructions: (args?: SetExportTxInstruction) => void
-  connection: string
+  rpc: string
   walletAddress?: string
+  appId?: string
   txInstructions?: Record<string, SetExportTxInstruction>
   setRemainingAccouts: (args: SetRemainingAccounts) => void
   setProgramAddress: (name: ProgramAddressKey, programAddress: string) => void
@@ -85,16 +86,18 @@ const DEFAULT_PARSER_IDL: IDLParserState = {
 
 type IDLContextProviderProps = {
   children: ReactNode
-  connection: string
+  rpc: string
   walletAddress?: string
   programAddresses: ProgramAddress
+  appId?: string
 }
 
 const IDLParserContextProvider = ({
   children,
-  connection,
+  rpc,
   walletAddress,
   programAddresses,
+  appId,
 }: IDLContextProviderProps) => {
   const [parserData, setParserData] = useState<IDLParserState>(
     DEFAULT_PARSER_IDL as IDLParserState,
@@ -235,9 +238,10 @@ const IDLParserContextProvider = ({
     () => ({
       parser: parserData,
       txInstructions: txInstruct,
-      connection,
+      rpc,
       walletAddress,
       programAddresses: stateProgramAddresses,
+      appId,
       setInstruction: selectInstruction,
       uploadIdl,
       setArgsMeta,
@@ -251,9 +255,10 @@ const IDLParserContextProvider = ({
     [
       parserData,
       txInstruct,
-      connection,
+      rpc,
       walletAddress,
       stateProgramAddresses,
+      appId,
       selectInstruction,
       uploadIdl,
       setArgsMeta,

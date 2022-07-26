@@ -5,7 +5,7 @@ import NodeWallet from '@project-serum/anchor/dist/cjs/nodewallet'
 import { useParser } from '../providers/parser.provider'
 
 export const useProvider = () => {
-  const connection = useParser().connection
+  const { rpc } = useParser()
 
   const wallet = useMemo(() => {
     const keyPair = web3.Keypair.generate()
@@ -14,10 +14,10 @@ export const useProvider = () => {
 
   return useMemo(
     () =>
-      new AnchorProvider(new web3.Connection(connection), wallet, {
+      new AnchorProvider(new web3.Connection(rpc), wallet, {
         commitment: 'confirmed',
         skipPreflight: true,
       }),
-    [connection, wallet],
+    [rpc, wallet],
   )
 }
