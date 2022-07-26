@@ -913,6 +913,10 @@ video {
   stroke: #64748b;
 }
 
+.stroke-slate-800 {
+  stroke: #1e293b;
+}
+
 .p-4 {
   padding: 1rem;
 }
