@@ -52,7 +52,6 @@ const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
     onChange({ publicKey: pdaAddress })
     for (const seed of seeds) {
       if (!seed) continue
-      console.log(seed, 'seed')
       setRecents({ name: RECENT_PDA_OTHER, value: seed })
     }
   }, [onChange, pdaAddress, seeds, setRecents])
