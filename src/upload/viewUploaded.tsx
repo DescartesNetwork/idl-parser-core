@@ -6,22 +6,15 @@ import IonIcon from '@sentre/antd-ionicon'
 import { useParser } from '../providers/parser.provider'
 import { Input, Typography } from '../components/ui'
 import UploadFIle from './uploadFile'
+import { useProgramAddress } from '../hooks/useProgramAddress'
 
 const ViewProgramAddress = () => {
   const { programAddresses, setProgramAddress } = useParser()
-  const {
-    provider: providerProgramAddr,
-    idl: idlProgramAddr,
-    customer: customProgramAddr,
-  } = programAddresses
+  const { provider: providerProgramAddr } = programAddresses
   const [isFocusProgramAddress, setIsFocusProgramAddress] = useState(false)
   const [value, setValue] = useState(providerProgramAddr)
   const inputRef = useRef<HTMLInputElement>(null)
-
-  const defaultProgramAddr = useMemo(
-    () => customProgramAddr || idlProgramAddr || providerProgramAddr,
-    [customProgramAddr, idlProgramAddr, providerProgramAddr],
-  )
+  const defaultProgramAddr = useProgramAddress()
 
   const onFocusFieldProgramAddrr = () => {
     if (!inputRef.current) return setIsFocusProgramAddress(false)

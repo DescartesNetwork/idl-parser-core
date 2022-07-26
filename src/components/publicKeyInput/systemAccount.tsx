@@ -5,6 +5,7 @@ import { account } from '@senswap/sen-js'
 import Button from '../ui/button'
 
 import { KeypairMeta, useParser } from '../../providers/parser.provider'
+import { useProgramAddress } from '../../hooks/useProgramAddress'
 
 const SYSTEM_ACCOUNTS = [
   { name: 'systemProgram', value: web3.SystemProgram.programId },
@@ -19,17 +20,7 @@ const SystemAccount = ({
 }: {
   onChange: (val: KeypairMeta) => void
 }) => {
-  const { programAddresses } = useParser()
-  const {
-    customer: customProgramAddr,
-    idl: idlProgramAddr,
-    provider: providerProgramAddr,
-  } = programAddresses
-
-  const programAddress = useMemo(
-    () => customProgramAddr || idlProgramAddr || providerProgramAddr,
-    [customProgramAddr, idlProgramAddr, providerProgramAddr],
-  )
+  const programAddress = useProgramAddress()
 
   return (
     <div className="grid grid-cols-2 gap-4">

@@ -6,6 +6,7 @@ import PubicKeyInput from './index'
 import { Button, Input, Typography } from '../ui'
 
 import { KeypairMeta, useParser } from '../../providers/parser.provider'
+import { useProgramAddress } from '../../hooks/useProgramAddress'
 
 const RECENT_PDA_OTHER = 'PDA-others'
 
@@ -13,18 +14,8 @@ const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
   const [seeds, setSeeds] = useState<string[]>([''])
   const [programAddress, setProgramAddress] = useState('')
   const [pdaAddress, setPdaAddress] = useState('')
-  const { programAddresses, setRecents } = useParser()
-
-  const {
-    customer: customProgramAddr,
-    idl: idlProgramAddr,
-    provider: providerProgramAddr,
-  } = programAddresses
-
-  const systemProgramAddr = useMemo(
-    () => customProgramAddr || idlProgramAddr || providerProgramAddr,
-    [customProgramAddr, idlProgramAddr, providerProgramAddr],
-  )
+  const { setRecents } = useParser()
+  const systemProgramAddr = useProgramAddress()
 
   const onAdd = () => {
     const newSeed = [...seeds]
@@ -61,6 +52,7 @@ const Pda = ({ onChange }: { onChange: (val: KeypairMeta) => void }) => {
     onChange({ publicKey: pdaAddress })
     for (const seed of seeds) {
       if (!seed) continue
+      console.log(seed, 'seed')
       setRecents({ name: RECENT_PDA_OTHER, value: seed })
     }
   }, [onChange, pdaAddress, seeds, setRecents])
