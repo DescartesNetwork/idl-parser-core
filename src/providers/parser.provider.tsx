@@ -17,10 +17,10 @@ const Context = createContext<ParserProvider>({} as ParserProvider)
 
 export type SystemSelected = 'context' | 'system' | 'idl' | 'token' | 'pda'
 
-export type TransactionInstruction = web3.TransactionInstruction
 export type SetExportTxInstruction = {
   name: string
-  data: TransactionInstruction
+  data: web3.TransactionInstruction
+  signer: web3.Keypair[]
 }
 export type SetRecents = { name: string; value: string }
 
@@ -68,7 +68,7 @@ export type ParserProvider = {
   setTxInstructions: (args?: SetExportTxInstruction) => void
   connection: string
   walletAddress?: string
-  txInstructions?: Record<string, TransactionInstruction>
+  txInstructions?: Record<string, SetExportTxInstruction>
   setRemainingAccouts: (args: SetRemainingAccounts) => void
   setProgramAddress: (name: ProgramAddressKey, programAddress: string) => void
   setRecents: (args: SetRecents) => void
@@ -183,11 +183,8 @@ const IDLParserContextProvider = ({
   const setTxInstructions = useCallback(
     (args?: SetExportTxInstruction) => {
       // Set next data = old data, not clone to avoid re-rendering unnecessary
-      const nextData: Record<string, TransactionInstruction> = txInstruct
-      if (!!args) {
-        const { name, data } = args
-        nextData[name] = data
-      }
+      const nextData: Record<string, SetExportTxInstruction> = txInstruct
+      if (!!args) nextData[args.name] = { ...args }
       return setTxInstruct(nextData)
     },
     [txInstruct],
