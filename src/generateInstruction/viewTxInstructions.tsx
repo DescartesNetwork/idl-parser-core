@@ -25,7 +25,8 @@ const ViewTxInstructions = () => {
     const signer: web3.Keypair[] = []
     for (const acc of ixIdl.accounts) {
       let accountMeta = accountsMetas[acc.name]
-      if (accountMeta?.privateKey) {
+      //@ts-ignore
+      if (accountMeta?.privateKey && acc.isSigner) {
         const keypair = web3.Keypair.fromSecretKey(
           Buffer.from(accountMeta.privateKey, 'hex'),
         )
